@@ -1,0 +1,1868 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f28c28">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Эвакуация">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="./icon.svg">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<title>Оценка эвакуации</title>
+<style>
+:root{color-scheme:dark;--bg:#10151c;--panel:#19222d;--panel2:#202c39;--line:#344252;--text:#edf2f7;--muted:#a4b1c0;--accent:#f28c28;--accent2:#49301c;--good:#54c28a;--bad:#ff6e70;--warn:#f2c66d;--shadow:0 8px 24px #0003;--input:#121b25;--radius:15px}
+:root[data-theme="light"]{color-scheme:light;--bg:#eef2f5;--panel:#fff;--panel2:#f4f7fa;--line:#d8e0e8;--text:#182330;--muted:#657586;--accent:#d97716;--accent2:#fbe8d2;--good:#168550;--bad:#c3343d;--warn:#9b6907;--shadow:0 7px 22px #132a3b12;--input:#f9fbfd}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.42 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.app{max-width:1040px;margin:0 auto;padding:14px 14px calc(44px + env(safe-area-inset-bottom))}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 0 14px}.brand{display:flex;align-items:center;gap:11px}.mark{width:38px;height:38px;border-radius:12px;background:var(--accent2);display:grid;place-items:center;color:var(--accent);font-weight:900;font-size:18px}.brand h1{font-size:18px;line-height:1.15;margin:0}.brand small{display:block;color:var(--muted);font-size:12px;margin-top:3px}.top-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.btn{border:1px solid var(--line);border-radius:11px;padding:9px 12px;background:var(--panel2);color:var(--text);font-weight:650;font-size:13px}.btn.primary{background:var(--accent);color:#061421;border-color:transparent}.btn.ghost{background:transparent}.btn.danger{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 45%,var(--line))}.btn:disabled{opacity:.45;cursor:not-allowed}.group-strip{display:flex;align-items:center;gap:8px;overflow-x:auto;padding:2px 1px 10px;margin-bottom:8px;scrollbar-width:thin}.group-chip{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:8px 13px;white-space:nowrap;font-size:13px}.group-chip.active{background:var(--accent2);border-color:var(--accent);color:var(--text);font-weight:750}.group-chip.add{border-style:dashed;color:var(--accent)}.summary{display:grid;grid-template-columns:minmax(0,1.35fr) repeat(3,minmax(105px,.65fr));gap:9px;margin:8px 0 12px}.tile{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 13px;min-width:0}.tile.main{background:linear-gradient(135deg,var(--panel),var(--panel2))}.tile .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.045em}.tile .v{font-size:23px;font-weight:800;line-height:1.2;margin-top:5px;font-variant-numeric:tabular-nums}.tile .sub{font-size:11px;color:var(--muted);margin-top:3px}.tile .v.good{color:var(--good)}.tile .v.bad{color:var(--bad)}.fail-banner{display:none;border:1px solid var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--panel));border-radius:12px;padding:10px 13px;margin:0 0 12px;color:var(--bad);font-weight:750}.fail-banner.show{display:block}.group-meta{display:grid;grid-template-columns:1.15fr .7fr 1fr 1fr;gap:9px;margin-bottom:10px}.field label{display:block;font-size:11px;color:var(--muted);margin:0 0 5px 2px}.field input,.field textarea,.member-box,.comment-input,.time-manual{width:100%;background:var(--input);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:9px 10px;min-width:0}.field input{height:40px}.members-details,.global-details,.data-details{background:var(--panel);border:1px solid var(--line);border-radius:13px;margin-bottom:10px}.members-details summary,.global-details summary,.data-details summary{list-style:none;display:flex;align-items:center;justify-content:space-between;padding:11px 13px;font-size:13px;font-weight:700;cursor:pointer}.members-details summary::-webkit-details-marker,.global-details summary::-webkit-details-marker,.data-details summary::-webkit-details-marker{display:none}.members-details summary:after,.global-details summary:after,.data-details summary:after{content:'＋';color:var(--muted)}details[open]>summary:after{content:'−'}.members-inner,.global-inner,.data-inner{padding:0 13px 13px}.micro{font-size:11px;color:var(--muted);margin:6px 1px}.member-box,.comment-input{min-height:74px;resize:vertical}.global-row{display:grid;grid-template-columns:180px 1fr;gap:9px;margin-bottom:9px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0 8px}.toolbar .spacer{flex:1}.timer-card{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:11px 13px;margin:11px 0}.timer-read{font-size:23px;font-weight:850;font-variant-numeric:tabular-nums;min-width:86px}.timer-status{font-size:11px;color:var(--muted);flex:1}.timer-card.running{border-color:var(--good)}.time-manual{width:82px;padding:8px 9px}.time-entry{display:inline-flex;align-items:center;gap:3px;background:var(--input);border:1px solid var(--line);border-radius:10px;padding:5px 8px;height:38px}.time-entry input{width:34px;min-width:0;border:0!important;outline:0!important;background:transparent!important;color:var(--text);padding:2px 0!important;text-align:center;font-variant-numeric:tabular-nums;font-weight:750}.time-entry input:first-child{width:42px}.time-entry .time-colon{font-weight:900;color:var(--accent);font-size:17px;user-select:none}.time-entry:focus-within{outline:2px solid var(--accent);outline-offset:2px}.fail-toggle{display:flex;align-items:center;gap:8px;color:var(--bad);font-size:13px;font-weight:750;margin:3px 0 13px}.fail-toggle input{accent-color:var(--bad);width:18px;height:18px}.section-nav{display:flex;gap:7px;overflow-x:auto;padding:1px 0 10px;position:sticky;top:145px;background:var(--bg);z-index:8}.section-nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:12px;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:7px 10px}.section-nav a:active{color:var(--accent)}.section{margin:15px 0 20px;scroll-margin-top:55px}.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 2px 8px}.section-head h2{font-size:15px;margin:0}.section-head span{font-size:11px;color:var(--muted)}.criteria-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.criterion{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:11px 12px;min-width:0;box-shadow:var(--shadow)}.criterion.done{border-left:3px solid var(--good);padding-left:10px}.criterion.missed{border-left:3px solid var(--warn);padding-left:10px}.criterion.failed{border-left:3px solid var(--bad);padding-left:10px}.criterion-top{display:flex;align-items:flex-start;gap:8px}.criterion-index{width:27px;height:27px;flex:0 0 27px;display:grid;place-items:center;background:var(--panel2);border-radius:8px;color:var(--muted);font-size:10px;font-weight:800}.criterion-copy{flex:1;min-width:0}.criterion-title{font-weight:650;font-size:13px;line-height:1.35}.criterion-note{font-size:11px;color:var(--muted);margin-top:4px}.score-pill{flex:0 0 auto;padding:4px 7px;border-radius:7px;background:var(--panel2);font-size:12px;font-weight:800;font-variant-numeric:tabular-nums}.score-pill.positive{color:var(--good)}.score-pill.negative{color:var(--bad)}.criterion-controls{display:flex;align-items:center;gap:7px;margin-top:9px;flex-wrap:wrap}.choice{border:1px solid var(--line);border-radius:9px;padding:7px 10px;background:var(--panel2);color:var(--muted);font-size:12px;font-weight:750;flex:1;min-width:72px}.choice.selected{border-color:var(--accent);background:var(--accent2);color:var(--text)}.choice.selected.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--panel));color:var(--bad)}.penalty-control{display:flex;align-items:center;gap:7px;width:100%;flex-wrap:wrap}.penalty-yes{flex:0 0 auto;min-width:88px}.penalty-count{display:flex;align-items:center;gap:6px;flex:1;min-width:145px;font-size:11px;color:var(--muted)}.penalty-input-wrap{display:inline-flex;align-items:center;gap:2px;background:var(--input);border:1px solid var(--line);border-radius:9px;padding:0 7px;height:36px}.penalty-minus{font-size:16px;font-weight:900;color:var(--bad);user-select:none}.penalty-count input{width:48px;height:32px;background:transparent;border:0;border-radius:0;color:var(--text);padding:4px 2px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums;outline:0}.penalty-input-wrap:focus-within{outline:2px solid var(--accent);outline-offset:2px}.count-control{display:flex;align-items:center;gap:7px;width:100%}.count-control input{width:78px;height:36px;background:var(--input);border:1px solid var(--line);border-radius:9px;color:var(--text);padding:5px 9px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums}.count-control span{font-size:11px;color:var(--muted);flex:1}.count-control .score-inline{font-size:13px;font-weight:800;color:var(--text);min-width:50px;text-align:right}.stepper{display:flex;align-items:center;gap:6px}.stepper button{width:34px;height:34px;border:1px solid var(--line);border-radius:9px;background:var(--panel2);color:var(--text);font-size:18px}.stepper input{width:54px;height:34px;text-align:center;background:var(--input);border:1px solid var(--line);border-radius:9px;color:var(--text);font-weight:800}.criterion details{border-top:1px solid var(--line);margin-top:9px;padding-top:7px}.criterion details summary{cursor:pointer;color:var(--muted);font-size:11px;list-style:none}.criterion details summary::-webkit-details-marker{display:none}.criterion details summary:before{content:'＋ ';color:var(--accent)}.criterion details[open] summary:before{content:'− '}.criterion-full{font-size:11px;white-space:pre-wrap;color:var(--muted);margin:8px 0}.comment-input{min-height:56px;font-size:12px}.small-label{display:block;font-size:10px;color:var(--muted);margin:7px 0 4px}.footnote{font-size:11px;color:var(--muted);margin:17px 2px}.results{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:18px}.results-head{display:flex;justify-content:space-between;align-items:center;padding:13px;border-bottom:1px solid var(--line)}.results-head h2{font-size:15px;margin:0}.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:12px;min-width:650px}th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}th{color:var(--muted);font-weight:650;background:var(--panel2)}td.num{text-align:right;font-variant-numeric:tabular-nums}td.status-fail{color:var(--bad);font-weight:800}td.status-ok{color:var(--good);font-weight:800}.row-actions button{font-size:11px;padding:5px 8px}.data-actions{display:flex;flex-wrap:wrap;gap:7px}.empty{color:var(--muted);padding:20px;text-align:center;font-size:13px}.toast{position:fixed;left:50%;bottom:calc(17px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--text);color:var(--bg);border-radius:999px;padding:9px 14px;font-size:12px;font-weight:750;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .2s;z-index:30}.toast.show{opacity:1}.hidden{display:none!important}
+@media(max-width:740px){.app{padding:11px 10px 35px}.summary{grid-template-columns:1.3fr 1fr 1fr}.summary .tile:nth-child(4){grid-column:1/-1}.tile .v{font-size:20px}.group-meta{grid-template-columns:1fr 1fr}.group-meta .field:first-child{grid-column:1/-1}.criteria-grid{grid-template-columns:1fr}.criterion{padding:10px}.section-nav{margin:0 -10px;padding-left:10px;padding-right:10px}.topbar{align-items:flex-start}.top-actions .btn{padding:8px 9px}.global-row{grid-template-columns:1fr}.timer-card{gap:8px}.timer-status{flex-basis:100%;order:4}}
+@media(max-width:390px){.brand h1{font-size:16px}.brand small{font-size:10px}.mark{width:34px;height:34px}.btn{font-size:12px}.summary{gap:6px}.tile{padding:10px}.criterion-title{font-size:12.5px}}
+
+.app-tabs{display:flex;gap:7px;margin:0 0 12px;position:sticky;top:0;z-index:20;background:var(--bg);padding:7px 0;border-bottom:1px solid var(--line)}.app-tab{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 8px;background:var(--panel);color:var(--muted);font-weight:750;font-size:13px}.app-tab.active{background:var(--accent2);border-color:var(--accent);color:var(--text)}.page-panel{display:none}.page-panel.active{display:block}.page-heading{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:8px 2px 12px}.page-heading h2{font-size:18px;margin:0}.page-heading span,.reference-note{font-size:11px;color:var(--muted)}.reference-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px;background:var(--panel)}.reference-table{min-width:720px;table-layout:fixed}.reference-table th{position:sticky;top:47px;z-index:2}.reference-table th,.reference-table td{white-space:normal;vertical-align:top;line-height:1.42}.reference-table td{width:50%;font-size:12px}.reference-table td:first-child{border-right:1px solid var(--line)}.ref-no{display:inline-grid;place-items:center;min-width:23px;height:21px;border-radius:6px;background:var(--panel2);color:var(--accent);font-weight:800;margin:0 6px 3px 0}.reference-table .ref-stage td{background:var(--panel2);color:var(--accent);font-weight:800}.reference-note{margin:9px 2px}.group-actions{display:flex;gap:5px;margin-left:auto}.group-actions .btn{padding:6px 9px;font-size:11px}.group-strip{margin-bottom:4px}.eval-sticky{position:sticky;top:49px;z-index:12;background:var(--bg);padding:7px 0 8px;border-bottom:1px solid var(--line);box-shadow:0 7px 12px #0002}.sticky-head{display:flex;gap:8px;align-items:center;margin-bottom:6px}.sticky-head .field{flex:1;min-width:0}.sticky-head input{height:36px!important;font-weight:800}.sticky-controls{display:flex;gap:8px;align-items:center}.sticky-controls .timer-card{flex:1;margin:0;padding:6px 8px;min-width:0}.sticky-controls .timer-status{display:none}.sticky-controls .timer-read{font-size:20px;min-width:64px}.sticky-controls .time-manual{width:67px}.sticky-controls .btn{padding:7px 8px;font-size:11px}.sticky-controls .fail-toggle{white-space:nowrap;margin:0;font-size:11px}.group-meta{grid-template-columns:.65fr 1fr 1fr}.global-details{padding:11px 13px}.global-details .global-inner{padding:8px 0 0}.global-details summary{padding:0;cursor:default;display:block}.global-details summary:after{display:none}.global-details .comment-input{min-height:80px}.members-details summary:after{content:'＋'}.members-details[open]>summary:after{content:'−'}
+@media(max-width:700px){.summary{grid-template-columns:repeat(2,minmax(0,1fr))}.group-meta{grid-template-columns:1fr 1fr}.sticky-controls{flex-wrap:wrap}.sticky-controls .timer-card{flex-basis:100%;order:2}.sticky-controls .fail-toggle{flex:1}.eval-sticky{top:49px}.reference-table th{top:48px}}
+
+/* v0.7 — separated workflow, archive, group details and reliable data exchange */
+.reference-intro{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin:10px 0}
+.reference-motto{display:inline-block;color:#e05252;background:color-mix(in srgb,#e05252 10%,var(--panel));border-left:4px solid #e05252;padding:7px 11px;border-radius:6px;font-size:18px;font-weight:900;letter-spacing:.02em;margin-bottom:10px}
+.reference-intro-text{font-size:13px;line-height:1.55}
+.reference-legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin:10px 2px 14px;color:var(--muted);font-size:11px}
+.reference-legend span{display:inline-flex;align-items:center;gap:6px}
+.legend-dot{width:9px;height:9px;border-radius:50%;display:inline-block}.legend-dot.green{background:#00b050}.legend-dot.red{background:#e05252}
+.source-instructor{color:#24b765;font-weight:600}.source-score{font-weight:850;font-style:italic;color:var(--text)}
+.reference-columns{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:12px;align-items:start}
+.reference-column{min-width:0;border:1px solid var(--line);background:var(--panel);border-radius:14px;overflow:hidden}
+.reference-column-head{padding:12px 14px;background:var(--panel2);border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:baseline;justify-content:space-between}
+.reference-column-head h3{font-size:15px;margin:0;color:var(--accent)}.reference-column-head span{font-size:10px;color:var(--muted);text-align:right}
+.ref-stage{margin:12px 11px 6px;padding:8px 10px;background:#d8d8d8;color:#c62828;border-left:4px solid #c62828;border-radius:7px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.025em}
+.ref-item{display:grid;grid-template-columns:27px minmax(0,1fr);gap:8px;padding:10px 12px;border-bottom:1px solid var(--line);align-items:start}
+.ref-index{display:grid;place-items:center;width:25px;height:25px;border-radius:8px;background:var(--panel2);color:var(--accent);font-weight:850;font-size:12px;font-variant-numeric:tabular-nums}
+.ref-item-title{font-size:12px;line-height:1.48}.ref-instructor-note{font-size:11px;line-height:1.45;margin-top:5px;padding-left:8px;border-left:2px solid #00b050}.ref-score-guide{font-size:11px;line-height:1.45;margin-top:5px;color:var(--muted)}
+.ref-timer{display:flex;flex-direction:column;gap:3px;margin:8px 11px;padding:10px 11px;border-radius:9px;border:1px solid #c94a4a;background:color-mix(in srgb,#c94a4a 10%,var(--panel));color:var(--text);font-size:11px;font-weight:700;line-height:1.4}
+.ref-timer-tag{color:#e05252;font-size:10px;font-weight:900;letter-spacing:.06em}.ref-time-rule{margin:12px;padding:12px;border:1px solid var(--accent);border-radius:11px;background:color-mix(in srgb,var(--accent) 8%,var(--panel));font-size:12px;line-height:1.5}.ref-time-title{font-size:12px;font-weight:900;color:var(--accent);margin-bottom:5px}
+.reference-score-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:13px 0;padding:12px;background:var(--panel);border:1px solid var(--line);border-radius:13px}
+.reference-score-summary>div{display:flex;flex-direction:column;gap:3px;padding:3px 7px;border-right:1px solid var(--line)}.reference-score-summary>div:last-of-type{border:0}.reference-score-summary span{font-size:10px;color:var(--muted)}.reference-score-summary b{font-size:16px;color:var(--accent)}.reference-score-summary p{grid-column:1/-1;margin:4px 2px 0;font-size:11px;color:var(--muted)}
+.reference-comment-note{padding:11px 13px;margin:12px 0;background:var(--panel2);border-radius:10px;font-size:12px;color:var(--muted)}.reference-comment-note b{color:var(--text)}
+.group-delete{padding:6px 9px;font-size:11px;white-space:nowrap}.group-strip{gap:6px}
+.group-meta{grid-template-columns:repeat(2,minmax(0,1fr))}.region-field{margin-bottom:9px}.region-field input{height:36px}.group-meta .field input{height:36px}
+.eval-sticky{position:sticky;top:0;z-index:30;padding:4px 0 5px;background:var(--bg);border-bottom:1px solid var(--line);box-shadow:0 5px 12px #0003}
+.sticky-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:center;margin:0 0 4px}.sticky-head .field label{display:none}.sticky-head .field input{height:31px!important;padding:5px 9px;font-size:13px;font-weight:800}
+.fail-button{height:32px;padding:0 11px;border-radius:9px;border:1px solid color-mix(in srgb,var(--bad) 50%,var(--line));background:color-mix(in srgb,var(--bad) 8%,var(--panel));color:var(--bad);font-size:11px;font-weight:900;white-space:nowrap}.fail-button.active{background:var(--bad);border-color:var(--bad);color:#fff;box-shadow:0 0 0 2px color-mix(in srgb,var(--bad) 22%,transparent)}
+.sticky-controls{display:flex;align-items:center;gap:5px;flex-wrap:nowrap}.sticky-controls .timer-card{flex:1;min-width:0;display:flex;gap:5px;align-items:center;margin:0;padding:3px 5px;border-radius:9px}.sticky-controls .timer-read{font-size:18px;min-width:54px}.sticky-controls .timer-status{display:none}.sticky-controls .btn{padding:5px 7px;font-size:10px;border-radius:8px}.sticky-controls .time-manual{width:61px;padding:5px 6px;height:29px;font-size:11px}.section-nav{position:sticky;top:78px;z-index:20;padding:5px 0 7px;background:var(--bg)}
+.criterion-index{font-variant-numeric:tabular-nums}.criterion-note.score-guide{color:var(--muted);font-weight:600}.criterion-full.instructor-note{border-left:3px solid #00b050;padding:4px 0 4px 9px;margin:3px 0 9px;color:#24b765;font-size:12px;line-height:1.5}.criterion details summary{font-weight:700}.criterion details{margin-top:8px}
+.modal-backdrop{display:none;position:fixed;inset:0;z-index:1000;background:#05090dcc;align-items:center;justify-content:center;padding:20px}.modal-backdrop.show{display:flex}.confirm-dialog{width:min(100%,380px);background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:20px;box-shadow:0 20px 60px #0008}.confirm-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--bad) 14%,var(--panel));color:var(--bad);font-size:25px;font-weight:800}.confirm-dialog h2{font-size:18px;margin:12px 0 5px}.confirm-dialog p{color:var(--muted);font-size:13px;line-height:1.45;margin:0 0 18px}.confirm-actions{display:flex;justify-content:flex-end;gap:8px}.confirm-actions .danger{background:var(--bad);color:#fff;border-color:var(--bad)}
+@media(max-width:700px){.reference-columns{grid-template-columns:1fr}.reference-score-summary{grid-template-columns:1fr 1fr}.reference-score-summary>div:nth-child(2){border-right:0}.reference-score-summary>div:last-of-type{grid-column:1/-1;border-top:1px solid var(--line);padding-top:8px}.group-meta{grid-template-columns:1fr 1fr}.eval-sticky{top:0}.sticky-controls .timer-card{flex:1;flex-basis:auto;order:0}.sticky-controls{flex-wrap:nowrap}.sticky-controls .time-manual{width:56px}.sticky-controls .timer-read{font-size:17px;min-width:49px}.section-nav{top:78px}.reference-column-head span{max-width:125px}}
+@media(max-width:380px){.sticky-controls{gap:3px}.sticky-controls .timer-card{gap:3px;padding:3px}.sticky-controls .btn{padding:5px 5px}.sticky-controls .time-manual{width:49px}.sticky-controls .timer-read{font-size:16px;min-width:45px}.fail-button{padding:0 8px;font-size:10px}}
+
+
+/* Original workbook color semantics */
+.ref-time-rule{border-color:#92d050;background:color-mix(in srgb,#92d050 9%,var(--panel))}.ref-time-title{color:#92d050}
+.reference-score-summary .metric-blue{background:#d8d8d8;border-radius:8px;padding:7px 9px}.reference-score-summary .metric-blue span,.reference-score-summary .metric-blue b{color:#0070c0}
+.reference-score-summary .metric-purple{background:color-mix(in srgb,#7030a0 10%,var(--panel));border-radius:8px;padding:7px 9px}.reference-score-summary .metric-purple b{color:#a77acb}
+.reference-score-summary p.metric-red{color:#e05252}.reference-score-summary p.metric-red b{color:#e05252}
+.section-head{background:#d8d8d8;border-radius:8px;padding:8px 10px;margin:17px 0 8px}.section-head h2{color:#c62828!important;font-weight:900!important;text-transform:uppercase;font-size:12px!important}
+
+
+/* Compact instructor dashboard and metadata row */
+.summary.dashboard{display:grid;grid-template-columns:minmax(0,1.45fr) repeat(3,minmax(0,.8fr));gap:0;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:8px 0 12px}
+.dashboard-main{padding:10px 13px;background:linear-gradient(135deg,var(--panel),var(--panel2));min-width:0}
+.dashboard-main .k,.dashboard-stat span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.035em}
+.dashboard-main .v{font-size:24px;font-weight:850;line-height:1.12;margin-top:3px;font-variant-numeric:tabular-nums}
+.dashboard-main .sub{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.3}
+.dashboard-stat{display:flex;flex-direction:column;justify-content:center;min-width:0;padding:9px 10px;border-left:1px solid var(--line)}
+.dashboard-stat b{font-size:19px;line-height:1.15;margin-top:4px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.dashboard-stat small{font-size:9px;color:var(--muted);margin-top:3px;white-space:nowrap}
+.group-meta{grid-template-columns:minmax(0,.9fr) minmax(0,1.35fr)!important;gap:8px}
+.group-meta .field{min-width:0}
+.group-meta .field input{width:100%;min-width:0}
+@media(max-width:700px){.summary.dashboard{grid-template-columns:minmax(0,1.25fr) repeat(3,minmax(0,.8fr));gap:0}.dashboard-main{padding:9px 10px}.dashboard-main .v{font-size:21px}.dashboard-main .sub{font-size:9px}.dashboard-stat{padding:8px 6px}.dashboard-stat b{font-size:16px}.dashboard-stat span{font-size:9px;letter-spacing:0}.dashboard-stat small{font-size:8px}.group-meta{grid-template-columns:minmax(0,.9fr) minmax(0,1.2fr)!important}}
+@media(max-width:390px){.summary.dashboard{grid-template-columns:1.15fr repeat(3,minmax(0,.75fr))}.dashboard-main{padding:8px}.dashboard-stat{padding:7px 4px}.dashboard-stat b{font-size:14px}.dashboard-main .v{font-size:19px}.dashboard-stat span{font-size:8px}}
+
+
+.course-tools{display:flex;gap:8px;align-items:end;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px;margin:0 0 12px}
+.course-tools .field{flex:1;min-width:180px}.course-list{display:grid;gap:8px;margin:10px 0 14px}.course-item{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:11px 13px}.course-info{flex:1;min-width:180px}.course-name{font-weight:750}.course-meta{font-size:11px;color:var(--muted);margin-top:3px}.course-actions{display:flex;gap:6px;flex-wrap:wrap}.eval-tools{display:flex;justify-content:flex-end;margin:8px 0}.group-detail-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin:12px 0}.group-detail-stat{padding:10px;border:1px solid var(--line);border-radius:10px}.group-detail-stat b{display:block;font-size:1.1rem}.detail-comments{white-space:pre-wrap;padding:12px;border:1px solid var(--line);border-radius:10px;margin-top:12px}.course-detail{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px;margin:10px 0}.course-detail-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}.course-detail-head h2{font-size:17px;margin:0;flex:1}.stepper button{width:36px;height:36px;border:1px solid var(--line);border-radius:9px;background:var(--panel2);color:var(--text);font-weight:900;font-size:18px}.stepper input{width:52px;height:36px;text-align:center;background:var(--input);border:1px solid var(--line);border-radius:9px;color:var(--text);font-weight:800;font-variant-numeric:tabular-nums}.penalty-stepper{display:inline-flex;align-items:center;gap:4px}.penalty-stepper button{width:32px;height:34px;border:1px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--text);font-weight:900;font-size:17px}.penalty-stepper button:active,.stepper button:active{border-color:var(--accent);background:var(--accent2)}
+
+/* v0.8 interface refinements */
+.group-strip{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.group-chip-wrap{display:flex;align-items:center;gap:3px;position:relative}
+.group-menu{position:relative}
+.group-menu summary{list-style:none;cursor:pointer;display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--text);font-size:20px;line-height:1}
+.group-menu summary::-webkit-details-marker{display:none}
+.group-menu[open] .group-menu-pop{display:grid}
+.group-menu-pop{display:none;position:absolute;right:0;top:39px;z-index:30;min-width:170px;padding:6px;background:var(--panel);border:1px solid var(--line);border-radius:11px;box-shadow:0 12px 30px #0005;gap:4px}
+.group-menu-pop button{width:100%;text-align:left;justify-content:flex-start}
+.group-chip.add{white-space:nowrap}
+.org-card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:11px;margin:8px 0 13px}
+.org-heading{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.org-card .group-meta{margin:0 0 8px}
+.org-card .members-details{border-top:1px solid var(--line);padding-top:7px}
+.org-card .members-details summary{font-weight:700}
+.org-card .members-inner{padding:9px 0 0}
+.course-tools{margin:0 0 12px;padding:0;background:transparent;border:0;justify-content:flex-end}
+.export-modal .confirm-dialog{max-width:440px}
+.export-modal input{width:100%;margin:8px 0 4px;padding:11px;border-radius:9px;border:1px solid var(--line);background:var(--input);color:var(--text)}
+.readonly-section{margin:14px 0}
+.readonly-section .section-head{display:flex;align-items:center;justify-content:space-between}
+.readonly-criterion{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:11px;margin:7px 0}
+.readonly-criterion .criterion-top{display:flex;align-items:flex-start;gap:9px}
+.readonly-criterion .criterion-copy{flex:1;min-width:0}
+.readonly-criterion .criterion-title{font-weight:650}
+.readonly-criterion .criterion-note{margin-top:5px}
+.readonly-criterion .readonly-notes{font-size:12px;color:var(--muted);margin-top:8px;white-space:pre-wrap}
+.readonly-criterion .readonly-comment{margin-top:7px;padding:8px;border-left:2px solid var(--accent);background:var(--panel2);border-radius:0 7px 7px 0;white-space:pre-wrap;font-size:12px}
+.course-group-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin:8px 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.course-group-card .course-group-info{flex:1;min-width:180px}
+.course-group-card .course-group-name{font-weight:750}
+.course-group-card .course-group-meta{font-size:11px;color:var(--muted);margin-top:4px}
+.course-group-card .course-group-score{font-size:18px;font-weight:850;white-space:nowrap}
+@media(max-width:520px){.org-card{padding:9px}.org-card .group-meta{grid-template-columns:1fr 1.2fr!important}.group-chip-wrap .group-chip{max-width:175px;overflow:hidden;text-overflow:ellipsis}}
+
+
+/* v0.9 visual refinement */
+.mark{width:42px;height:42px;flex:0 0 42px;border-radius:12px;background:#f28c28;padding:4px;overflow:hidden}
+.mark svg{display:block;width:100%;height:100%}
+.brand h1{font-size:17px;letter-spacing:-.02em}
+.page-heading{margin:10px 2px 12px;align-items:center}
+.page-heading h2{font-size:19px;letter-spacing:-.025em}
+.course-item{border-radius:14px;padding:13px 14px;gap:12px}
+.course-name{font-size:14px;line-height:1.35;overflow-wrap:anywhere}
+.course-meta{line-height:1.45;overflow-wrap:anywhere}
+.course-actions{align-items:center}
+.course-actions .btn{white-space:nowrap}
+.course-detail{border-radius:16px;padding:14px}
+.course-detail-head h2{min-width:0;overflow-wrap:anywhere;line-height:1.25}
+.readonly-section{margin:18px 0 22px}
+.readonly-section .section-head{align-items:flex-end;margin:0 2px 9px;gap:10px}
+.readonly-section .section-head h2{font-size:16px;line-height:1.3;overflow-wrap:anywhere}
+.readonly-section .section-head span{flex:0 0 auto;white-space:nowrap}
+.readonly-criterion{padding:12px 13px;margin:7px 0;border-radius:13px;min-width:0;overflow-wrap:anywhere}
+.readonly-criterion .criterion-title{line-height:1.4;overflow-wrap:anywhere;hyphens:auto}
+.readonly-criterion .criterion-note{line-height:1.45;overflow-wrap:anywhere}
+.readonly-criterion .criterion-index,.readonly-criterion .score-pill{font-variant-numeric:tabular-nums;white-space:nowrap}
+.reference-intro-text{line-height:1.55;overflow-wrap:anywhere;hyphens:auto}
+.reference-intro-text .source-instructor{display:inline}
+@media(max-width:600px){
+ .app{padding-left:12px;padding-right:12px}
+ .topbar{gap:8px;align-items:center}
+ .brand{gap:9px;min-width:0}
+ .brand h1{font-size:16px}
+ .top-actions{gap:5px}
+ .top-actions .btn{padding:8px 9px;font-size:12px}
+ .course-item{align-items:flex-start}
+ .course-info{flex-basis:100%;min-width:0}
+ .course-actions{width:100%;display:grid;grid-template-columns:1fr 1fr 1fr}
+ .course-actions .btn{padding:8px 7px;font-size:12px}
+ .readonly-criterion{padding:11px}
+ .readonly-criterion .criterion-top{gap:7px}
+ .readonly-criterion .criterion-index{width:25px;height:25px;flex-basis:25px}
+ .readonly-criterion .score-pill{padding:4px 6px}
+ .course-detail-head{align-items:flex-start}
+ .course-detail-head h2{flex-basis:calc(100% - 100px);font-size:16px}
+}
+
+
+/* v1.0 fixes */
+.org-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(112px,.42fr);gap:10px;align-items:stretch}
+.org-fields{display:grid;grid-template-rows:1fr 1fr;gap:7px;min-width:0}
+.org-fields .field{min-width:0}
+.org-fields input{width:100%;min-width:0}
+.org-export{grid-column:2;grid-row:1 / span 2;align-self:stretch;justify-content:center;white-space:normal;line-height:1.25;padding:8px;min-width:0}
+.group-strip{position:relative;isolation:auto;overflow-x:auto;overflow-y:visible}
+.group-menu{z-index:40}
+.group-menu[open]{z-index:10000}
+.group-menu[open] .group-menu-pop{position:fixed!important;z-index:100000!important}
+.modal-backdrop{z-index:2000}
+@media(max-width:420px){.org-layout{grid-template-columns:minmax(0,1fr) 104px;gap:7px}.org-export{font-size:11px;padding:6px}.org-fields input{font-size:13px}}
+
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><div class="mark" aria-label="Логотип приложения"><svg viewBox="0 0 100 100" role="img" aria-hidden="true"><path fill="#fff" d="M34 5h32a6 6 0 0 1 6 6v17h17a6 6 0 0 1 6 6v32a6 6 0 0 1-6 6H72v17a6 6 0 0 1-6 6H34a6 6 0 0 1-6-6V72H11a6 6 0 0 1-6-6V34a6 6 0 0 1 6-6h17V11a6 6 0 0 1 6-6Z"/><path d="M8 51h29l6-13 7 17 8-42 7 72 8-34h29" fill="none" stroke="#f28c28" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><h1>Оценка эвакуации</h1><small>Инструкторский прототип · офлайн</small></div></div>
+    <div class="top-actions">
+      <button class="btn ghost" id="themeBtn" type="button">☼ Тема</button>
+    </div>
+  </header>
+  <nav class="app-tabs" aria-label="Разделы приложения">
+    <button class="app-tab active" data-tab="referencePage">Методичка</button>
+    <button class="app-tab" data-tab="evaluationPage">Занятие</button>
+    <button class="app-tab" data-tab="ratingPage">Архив и рейтинг</button>
+  </nav>
+  <section class="page-panel" id="referencePage">
+  <div class="page-heading"><h2>Методичка по эвакуации</h2></div>
+  <div class="reference-intro"><div class="reference-motto">КАЧЕСТВЕННО ≠ МЕДЛЕННО</div><div class="reference-intro-text">Для инструкторов: обучение проводить таким образом, чтобы все эти моменты были озвучены во время обучения. До выхода группы эвакуации на учебную эвакуацию определить и озвучить: 1. время года, 2. кто выполняет роль штаба. 3. Статист без травм, лёгкое переохлаждение, слабость, сам идти не может, требуется эвакуация. Инструкторам записать ФИО, позывные всех участников группы эвакуации, отдельно старшего группы эвакуации. <span class="source-instructor">В комплекте эвакуации минимум 3 полных слоя + отдельный слой на ноги (3 пледа + 3 спасодеяла - большие, по 1 маленькие на ноги). Статист-потеряшка откликается только когда к нему подойдет вплотную кто-то из курсантов.</span><br>Курсантам нельзя подглядывать в данное руководство во время учебной эвакуации. Таблица рассчитана на самый простой сценарий эвакуации.<br>Баллы по суммируемым позициям отсчитываются от нуля.</div></div>
+  <div class="reference-legend">
+    <span><i class="legend-dot green"></i> Зелёный — инструкторские комментарии</span>
+    <span><i class="legend-dot red"></i> Красный — этапы и команды таймера</span>
+    <span><b><em>Жирный курсив</em></b> — правила начисления баллов</span>
+  </div>
+  <div class="reference-columns">
+    <section class="reference-column">
+      <div class="reference-column-head"><h3>Алгоритм действий</h3><span>26 пунктов · максимум 31 балл</span></div>
+      <div class="ref-stage"><span>ОБНАРУЖЕНИЕ ЛИСОЙ ПОТЕРЯШКИ ВИЗУАЛЬНО</span></div><article class="ref-item"><span class="ref-index">1</span><div class="ref-item-body"><div class="ref-item-title">На месте стой раз-два, безопасно ли мне стоять? если нет, уход в безопасное место. Оклик пострадавшего.  </div><div class="ref-instructor-note"><span class="source-instructor"> (статист-потеряшка не отвечает,</span><span class="source-instructor">если ломану -лся/-лись сразу к потеряшке, ставим 0, подходит сначала старший группы).</span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">2</span><div class="ref-item-body"><div class="ref-item-title">Есть ответ от потеряшки - короткое общение с потеряшкой , налаживание контакта, объяснение ситуации. Не нужно пугать потеряшку. Группа ставит точку в навигатор.   </div><div class="ref-instructor-note"><span class="source-instructor">(статист-потеряшка не отвечает,</span><span class="source-instructor">если не поставили точку в навигатор, ставим 0).</span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><div class="ref-stage"><span>ДВИЖЕНИЕ К ПОТЕРЯШКЕ</span></div><article class="ref-item"><span class="ref-index">3</span><div class="ref-item-body"><div class="ref-item-title">Безопасно ли мне идти? выбор безопасного маршрута, осматриваемся по сторонам, подход к пострадавшему, не доходя двух шагов. </div><div class="ref-instructor-note"><span class="source-instructor">(ломятся, не разбирая дороги, идут не осматриваясь, подходят всей группой, ставим 0). </span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">4</span><div class="ref-item-body"><div class="ref-item-title">Безопасно ли мне работать? осмотр на наличие опасностей, артефактов, блистеров от таблеток и пр., если опасность есть уходим в безопасное место, при прямой угрозе жизни нам-уходим в безопасное место, при прямой угрозе жизни потеряшке-решаем уходить самим или экстренно перемещать потеряшку за границу очага. </div><div class="ref-instructor-note"><span class="source-instructor">(не нашли артефакты, явную угрозу ставим 0). </span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><div class="ref-stage"><span>РАБОТА С ПОТЕРЯШКОЙ</span></div><div class="ref-stage"><span>РАБОТА ЛИСЫ ДО ПРИХОДА ГРУППЫ ЭВАКУАЦИИ</span></div><article class="ref-item"><span class="ref-index">5</span><div class="ref-item-body"><div class="ref-item-title">Опрос потеряшки, вежливое общение с потеряшкой, продолжаем налаживать контакт. Не нужно пугать потеряшку.</div><div class="ref-instructor-note"><span class="source-instructor"> (грубо общаются с потеряшкой, ставим 0). <br></span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">6</span><div class="ref-item-body"><div class="ref-item-title">Проведение вторичного или визуального осмотра-опроса, т.е. оценка состояния потеряшки. </div><div class="ref-instructor-note"><span class="source-instructor">(если проводят вторичный осмотр без блокирования руки, то 0 или если не опросили болит ли что-то, &quot;подвигай ручками, подвигай ножками&quot;, то 0. Если упустили травму, ставим 0). </span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">7</span><div class="ref-item-body"><div class="ref-item-title">Доклад в штаб. Запрос группы эвак. </div><div class="ref-instructor-note"><span class="source-instructor">(не передали координаты, не запросили гр. эвак., ставим 0). </span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">8</span><div class="ref-item-body"><div class="ref-item-title">Изолирование от земли. </div><div class="ref-instructor-note"><span class="source-instructor">(не изолировали лапником, пенкой, подложкой под ламинат, ставим 0). </span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">9</span><div class="ref-item-body"><div class="ref-item-title">Изолирование от внешней среды.</div><div class="ref-instructor-note"><span class="source-instructor"> (не изолировали спасодеялом или подобным, ставим 0). </span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">10</span><div class="ref-item-body"><div class="ref-item-title">Расчистка места для группы эвакуации, перемещение потеряшки в удобное место или подготовка для перемещения потеряшки в удобное место, когда придёт группа эвакуации. </div><div class="ref-instructor-note"><span class="source-instructor">(место для статиста-потеряшки всегда выбирать такое, чтобы было неудобно работать группе эвакуации. Не выбрали удобное место для работы группы, ставим 0). </span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><div class="ref-timer start"><span class="ref-timer-tag">СТАРТ ТАЙМЕРА</span><span>ГРУППА ЭВАКУАЦИИ ПРИШЛА НА МЕСТО - СТАРТ СЕКУНДОМЕРА</span></div><article class="ref-item"><span class="ref-index">11</span><div class="ref-item-body"><div class="ref-item-title">Снятие/срезание мокрой/промерзшей одежды и любой обуви (не снимаем вместе с кожей!).</div><div class="ref-instructor-note"><span class="source-instructor"> (не сняли обувь, ставим 0). </span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">12</span><div class="ref-item-body"><div class="ref-item-title">Защитные очки для потеряшки.</div><div class="ref-instructor-note"><span class="source-instructor"> (Нет / Есть). </span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">13</span><div class="ref-item-body"><div class="ref-item-title">Утепление головы шапкой, отдельным пледом, подобнымж<br></div><div class="ref-instructor-note"><span class="source-instructor">(Не сделали / Сделали). </span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">14</span><div class="ref-item-body"><div class="ref-item-title">Запаковка ног в отдельный плед.</div><div class="ref-instructor-note"><span class="source-instructor"> (Не сделали / Сделали).<br></span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">15</span><div class="ref-item-body"><div class="ref-item-title">Запаковка ног в отдельное спасодеяло.<br></div><div class="ref-instructor-note"><span class="source-instructor">(Не сделали / Сделали).<br></span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">16</span><div class="ref-item-body"><div class="ref-item-title">Убрать локти с линии корпуса, чтобы не отбить себе колени и потеряшке локти на мягких носилках. </div><div class="ref-instructor-note"><span class="source-instructor">(Не сделали / Сделали).<br></span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">17</span><div class="ref-item-body"><div class="ref-item-title">Дополнительное утепление шеи отдельным пледом, шарфом, пр. </div><div class="ref-instructor-note"><span class="source-instructor">(Не сделали / Сделали). </span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">18</span><div class="ref-item-body"><div class="ref-item-title">Запаковка всего потеряшки в плед. Если два маленьких пледа-запаковываем так, чтобы заменить один большой плед, которого хватит и на ноги, и на голову. </div><div class="ref-instructor-note"><span class="source-instructor">(Не сделали / Сделали).<br></span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">19</span><div class="ref-item-body"><div class="ref-item-title">Запаковка всего потеряшки в спасодеяло. Если два маленьких спасодеяла, запаковываем так, чтобы заменить одно большое спасодеяло, которого хватит и на ноги, и на голову.<br></div><div class="ref-instructor-note"><span class="source-instructor">(Не сделали / Сделали). </span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">20</span><div class="ref-item-body"><div class="ref-item-title">Укладывание пострадавшего на носилки </div><div class="ref-instructor-note"><span class="source-instructor">(если голова не на носилках, ставим 0). </span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1. </em></strong></div></div></article><article class="ref-item"><span class="ref-index">21</span><div class="ref-item-body"><div class="ref-item-title">Осмотр места перед уходом группы эвакуации, не нужно: забывать оборудование, вещи, оставлять после себя мусор и пр. . </div><div class="ref-instructor-note"><span class="source-instructor">(забыли, ставим 0)</span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">22</span><div class="ref-item-body"><div class="ref-item-title">Подъем пострадавшего на носилках, у каждого работают ноги, спина не должна работать <br></div><div class="ref-instructor-note"><span class="source-instructor">(1 поисковик с кривой спиной- ставим -1, если у него же несколько раз так - не суммируем). </span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы: &quot;1&quot; - если спина прямая у всех.<br> &quot;-1&quot; суммируется за каждого человека с кривой спиной.</em></strong></div></div></article><div class="ref-timer stop"><span class="ref-timer-tag">СТОП ТАЙМЕРА</span><span>СТОП СЕКУНДОМЕРА: ГРУППА ЭВАКУАЦИИ ВЫДВИНУЛАСЬ В ШТАБ. ЗАПИСАТЬ МИНУТЫ В ЛЕВОЙ ЯЧЕЙКЕ, мин., сек.</span></div><article class="ref-item"><span class="ref-index">23</span><div class="ref-item-body"><div class="ref-item-title">Несём ногами вперед, по подъему головой вперед. <br></div><div class="ref-score-guide"><strong><em class="source-score">Баллы: &quot;1&quot; - если всегда правильно.<br> &quot;-1&quot; суммируется за каждый раз, когда неправильно.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">24</span><div class="ref-item-body"><div class="ref-item-title">Контроль положения пострадавшего на носилках, не поднимать высоко ноги или голову. Носилки примерно горизонтально. </div><div class="ref-instructor-note"><span class="source-instructor">(сильно задирают, ставим 0). </span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">25</span><div class="ref-item-body"><div class="ref-item-title">Если мягкие носилки, то каждый раз осмотр площадки перед опусканием носилок с потеряшкой. . </div><div class="ref-instructor-note"><span class="source-instructor">(один раз не осмотрели площадку, ставим 0, больше не суммируем)</span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">26</span><div class="ref-item-body"><div class="ref-item-title">В случае потери сознания потеряшкой: 1.группа стоп, 2.опускаем на проверенную поверхность, 3.проверка сознания, 4.проверка дыхания, 5.дыхание есть-повернули на бок или запрокинули голову (дыхания нет-СЛР), 6.доклад в штаб.  </div><div class="ref-instructor-note"><span class="source-instructor">(статист 1 раз &quot;теряет&quot; сознание когда уже будут нести, инструктор возобновляет эвакуацию после всех действий группы по алгоритмы).</span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 6.</em></strong></div></div></article>
+    </section>
+    <section class="reference-column">
+      <div class="reference-column-head"><h3>Нельзя забыть</h3><span>16 пунктов · максимум 16 баллов</span></div>
+      <article class="ref-item"><span class="ref-index">1</span><div class="ref-item-body"><div class="ref-item-title">Наличие медицинских перчаток у всех, кто работает с потеряшкой, несёт носилки, приходит из ближней разведки на замену тем, кто несёт носилки. В случае повреждения перчаток их замена. </div><div class="ref-instructor-note"><span class="source-instructor"><br></span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы: &quot;1&quot; - перчатки были у всех, порванные перчатки меняли.<br> &quot;-1&quot; сумма за каждого без перчаток или в порванных перчатках.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">2</span><div class="ref-item-body"><div class="ref-item-title">Наличие СИЗ, очков защищающих глаза поисковиков, ХБ/тактических перчаток.<br>Баллы: &quot;1&quot; - защитные очки были у всех.<br> &quot;-1&quot; за каждого без защитных очков.</div></div></article><article class="ref-item"><span class="ref-index">3</span><div class="ref-item-body"><div class="ref-item-title">Не должно быть &quot;балагана&quot; <br></div><div class="ref-instructor-note"><span class="source-instructor">(явный &quot;балаган&quot;, ставим 0).</span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">4</span><div class="ref-item-body"><div class="ref-item-title">Не должно быть конфликтов. <br></div><div class="ref-instructor-note"><span class="source-instructor">(конфликты, ставим 0).</span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">5</span><div class="ref-item-body"><div class="ref-item-title">Обходим потеряшку со стороны ног. Не перешагиваем через потеряшку.  </div><div class="ref-instructor-note"><span class="source-instructor">(перешагнули через потеряшку - 0).</span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">6</span><div class="ref-item-body"><div class="ref-item-title">Не курить рядом самим и не давать курить потеряшке (если потеряшка достал свои сигареты и сам их подкурил, то не нужно выбивать из рук потеряшки его сигареты, мягко попробовали отговорить, не помогло, контролируем состояние и сознание). <br></div><div class="ref-score-guide"><strong><em class="source-score">Баллы: &quot;1&quot; если соблюдали все рекомендации.<br>&quot;-1&quot; суммируется за каждого поисковика, при котором потеряшке вручили свои (поисковиков) сигареты. </em></strong></div></div></article><article class="ref-item"><span class="ref-index">7</span><div class="ref-item-body"><div class="ref-item-title">Не передавать над потеряшкой крупные/опасные предметы.<br></div><div class="ref-instructor-note"><span class="source-instructor">(считается 1 раз).</span></div><div class="ref-score-guide"><strong><em class="source-score"> Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">8</span><div class="ref-item-body"><div class="ref-item-title">Эвакуацией руководит 1 человек, советовать и помогать можно и нужно, только не превращать всё в балаган и не создавать конфликты </div><div class="ref-instructor-note"><span class="source-instructor">(нет явного старшего, ставим 0). </span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">9</span><div class="ref-item-body"><div class="ref-item-title">Наличие скотча (лучше серого, армированного).</div><div class="ref-score-guide"><strong><em class="source-score"> Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">10</span><div class="ref-item-body"><div class="ref-item-title">Наличие ножниц атравматических. </div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">11</span><div class="ref-item-body"><div class="ref-item-title">Пледы, спасодеяла и пр. сбоку (просим потеряшку повернуться) или переложить на все слои. Если травмы или сильное переохлаждение-подъем потеряшки только на руках группой, подача всех слоев только с ног.  </div><div class="ref-instructor-note"><span class="source-instructor"> (0 при некорректной подаче)</span></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1. </em></strong></div></div></article><article class="ref-item"><span class="ref-index">12</span><div class="ref-item-body"><div class="ref-item-title">Минимальное количество слоёв для утепления: летом минимум 2 слоя, зимой минимум 3 слоя. 1 слой утепления-это большой плед на всё тело+большое спасодеяло на всё тело. Спальник является 1 слоем утепления. Отдельное утепление ног за слой не считается. Внимательно относимся к жалобам потеряшки, в том числе на холод или жару. Если перегрев-утеплять не будем.<br></div><div class="ref-score-guide"><strong><em class="source-score">Баллы: &quot;1&quot; выбрали правильное количество слоёв.<br>&quot;-1&quot; суммируется за каждый слой, в который не утеплили.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">13</span><div class="ref-item-body"><div class="ref-item-title">Контроль головы потеряшки (поворот, подъем, опускания).<br>Баллы: &quot;1&quot; - если рекомендации соблюдены.<br> &quot;0&quot; если не соблюдали рекомендации.</div></div></article><article class="ref-item"><span class="ref-index">14</span><div class="ref-item-body"><div class="ref-item-title">Отсутствие дыр в упаковке в начале эвакуации и когда уже принесли в штаб. </div><div class="ref-score-guide"><strong><em class="source-score">Баллы от 0 до 1. </em></strong></div></div></article><article class="ref-item"><span class="ref-index">15</span><div class="ref-item-body"><div class="ref-item-title">Контроль сознания потеряшки не реже 1 раза в минуту. (Если контроль сознания не осуществлялся больше 1 минуты, то вся эвакуация считается проваленной, все баллы умножаются на 0). <br></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от &quot;умножить на ноль&quot; до &quot;1&quot;.</em></strong></div></div></article><article class="ref-item"><span class="ref-index">16</span><div class="ref-item-body"><div class="ref-item-title">Если эвакуация продолжается при потере сознания потеряшкой (Вся эвакуация считается проваленной, все баллы умножаются на 0).<br></div><div class="ref-score-guide"><strong><em class="source-score">Баллы от &quot;умножить на ноль&quot; до &quot;1&quot;.</em></strong></div></div></article>
+      <div class="ref-time-rule"><div class="ref-time-title">Правило времени</div>На упаковку потеряшки всей группой эвакуации есть 30 минут.<br>Если меньше 30 минут, то +0,5 балла за каждую минуту.<br>Если больше 30 минут, то -0,5 балла за каждую минуту.<br></div>
+    </section>
+  </div>
+  <div class="reference-score-summary">
+    <div class="metric-blue"><span>Максимум · алгоритм</span><b>31 балл</b></div>
+    <div class="metric-blue"><span>Максимум · «Нельзя забыть»</span><b>16 баллов</b></div>
+    <div class="metric-blue"><span>Максимум без времени</span><b>47 баллов</b></div>
+    <div class="metric-purple"><span>Набранные баллы без времени</span><b>Сумма двух блоков</b></div>
+    <p class="metric-red"><b>Итог с учётом времени:</b> баллы без времени + (30 − время в минутах) × 0,5. Базовое время — 30 минут.</p>
+  </div>
+  <div class="reference-comment-note"><b>Комментарии инструктора.</b> В оценке группы фиксируйте дату, позывной инструктора и наблюдения, которые важно сохранить после учения.</div>
+</section>
+  <section class="page-panel" id="evaluationPage">
+    <div class="group-strip" id="groupStrip"></div>
+    <main id="main"></main>
+  </section>
+  <section class="page-panel" id="ratingPage">
+    <div id="ratingListView">
+      <div class="results"><div class="results-head"><h2>Прошедшие занятия</h2><span class="micro" id="courseCount"></span></div><div id="courseList" class="course-list"><div class="empty">Пока нет сохранённых занятий</div></div></div>
+      <div class="results" id="results"><div class="results-head"><h2>Общий рейтинг</h2><span class="micro" id="ratingCount"></span></div><div class="table-wrap" id="ratingTable"></div></div>
+      <details class="data-details" id="dataDetails" open><summary>Обмен базой между инструкторами</summary><div class="data-inner"><div class="data-actions"><button class="btn primary" id="exportAll">Экспорт базы занятий JSON</button><button class="btn" id="importAll">Импорт базы занятий JSON</button><button class="btn" id="exportRating">Экспорт рейтинга CSV</button></div><p class="micro">Экспорт включает архив занятий, текущие группы и рейтинг. Отправьте JSON в общий чат. Коллеги импортируют файл — данные объединятся с их базами. Совпадения определяются по названию, дате, региону и составу группы.</p><input id="importFile" type="file" accept=".json,application/json" class="hidden"></div></details>
+    </div>
+    <div id="courseDetailView" class="course-detail hidden"><div class="course-detail-head"><button class="btn" id="backToCourses">← К занятиям</button><h2 id="courseDetailTitle"></h2><button class="btn" id="exportThisCourse">Экспорт занятия</button></div><div class="micro" id="courseDetailMeta"></div><div class="table-wrap" id="courseDetailTable"></div></div>
+    <div id="groupDetailView" class="course-detail hidden"><div class="course-detail-head"><button class="btn" id="backFromGroupDetail">← Назад</button><h2 id="groupDetailTitle"></h2><button class="btn" id="exportDetailGroup">Экспорт группы</button></div><div class="micro" id="groupDetailMeta"></div><div id="groupDetailSummary"></div><div class="table-wrap" id="groupDetailTable"></div><div id="groupDetailComments"></div></div>
+  </section>
+  
+</div>
+<div class="toast" id="toast"></div>
+<div class="modal-backdrop" id="deleteModal" aria-hidden="true"><div class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="deleteTitle"><div class="confirm-icon">×</div><h2 id="deleteTitle">Удалить группу?</h2><p id="deleteMessage"></p><div class="confirm-actions"><button type="button" class="btn ghost" id="cancelDelete">Отмена</button><button type="button" class="btn danger" id="confirmDelete">Удалить группу</button></div></div></div>
+<div class="modal-backdrop export-modal" id="exportCourseModal" aria-hidden="true"><div class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="exportCourseTitle"><h2 id="exportCourseTitle">Экспорт занятия</h2><p>Укажите название занятия. Оно попадёт в архив и в экспортируемый файл.</p><input id="courseTitleInput" maxlength="120" placeholder="Например: Эвакуация, Апаринки 2026"><div class="confirm-actions"><button type="button" class="btn ghost" id="cancelCourseExport">Отмена</button><button type="button" class="btn primary" id="confirmCourseExport">Экспортировать</button></div></div></div>
+<div class="modal-backdrop export-modal" id="renameGroupModal" aria-hidden="true"><div class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="renameGroupTitle"><h2 id="renameGroupTitle">Переименовать группу</h2><input id="renameGroupInput" maxlength="80" placeholder="Название группы"><div class="confirm-actions"><button type="button" class="btn ghost" id="cancelRenameGroup">Отмена</button><button type="button" class="btn primary" id="confirmRenameGroup">Сохранить</button></div></div></div>
+<script id="criteria-data" type="application/json">[
+  {
+    "id": "L11",
+    "side": "main",
+    "row": 11,
+    "section": "Обнаружение потеряшки",
+    "title": "На месте стой раз-два, безопасно ли мне стоять? если нет, уход в безопасное место. Оклик пострадавшего. (статист-потеряшка не отвечает, если ломану -лся/-лись сразу к потеряшке, ставим 0, подходит сначала старший группы). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 1,
+    "publicText": "На месте стой раз-два, безопасно ли мне стоять? если нет, уход в безопасное место. Оклик пострадавшего.",
+    "instructorSegments": [
+      {
+        "text": " (статист-потеряшка не отвечает,"
+      },
+      {
+        "text": "если ломану -лся/-лись сразу к потеряшке, ставим 0, подходит сначала старший группы)."
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "На месте стой раз-два, безопасно ли мне стоять? если нет, уход в безопасное место. Оклик пострадавшего."
+      },
+      {
+        "kind": "instructor",
+        "text": " (статист-потеряшка не отвечает,"
+      },
+      {
+        "kind": "public",
+        "text": " "
+      },
+      {
+        "kind": "instructor",
+        "text": "если ломану -лся/-лись сразу к потеряшке, ставим 0, подходит сначала старший группы)."
+      },
+      {
+        "kind": "public",
+        "text": " "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L12",
+    "side": "main",
+    "row": 12,
+    "section": "Обнаружение потеряшки",
+    "title": "Есть ответ от потеряшки - короткое общение с потеряшкой , налаживание контакта, объяснение ситуации. Не нужно пугать потеряшку. Группа ставит точку в навигатор. (статист-потеряшка не отвечает, если не поставили точку в навигатор, ставим 0). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 2,
+    "publicText": "Есть ответ от потеряшки - короткое общение с потеряшкой , налаживание контакта, объяснение ситуации. Не нужно пугать потеряшку. Группа ставит точку в навигатор.",
+    "instructorSegments": [
+      {
+        "text": "(статист-потеряшка не отвечает,"
+      },
+      {
+        "text": "если не поставили точку в навигатор, ставим 0)."
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Есть ответ от потеряшки - короткое общение с потеряшкой , налаживание контакта, объяснение ситуации. Не нужно пугать потеряшку. Группа ставит точку в навигатор. "
+      },
+      {
+        "kind": "instructor",
+        "text": "(статист-потеряшка не отвечает,"
+      },
+      {
+        "kind": "public",
+        "text": " "
+      },
+      {
+        "kind": "instructor",
+        "text": "если не поставили точку в навигатор, ставим 0)."
+      },
+      {
+        "kind": "public",
+        "text": " "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L14",
+    "side": "main",
+    "row": 14,
+    "section": "Движение к потеряшке",
+    "title": "Безопасно ли мне идти? выбор безопасного маршрута, осматриваемся по сторонам, подход к пострадавшему, не доходя двух шагов. (ломятся, не разбирая дороги, идут не осматриваясь, подходят всей группой, ставим 0). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 3,
+    "publicText": "Безопасно ли мне идти? выбор безопасного маршрута, осматриваемся по сторонам, подход к пострадавшему, не доходя двух шагов.",
+    "instructorSegments": [
+      {
+        "text": "(ломятся, не разбирая дороги, идут не осматриваясь, подходят всей группой, ставим 0). "
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Безопасно ли мне идти? выбор безопасного маршрута, осматриваемся по сторонам, подход к пострадавшему, не доходя двух шагов. "
+      },
+      {
+        "kind": "instructor",
+        "text": "(ломятся, не разбирая дороги, идут не осматриваясь, подходят всей группой, ставим 0). "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L15",
+    "side": "main",
+    "row": 15,
+    "section": "Движение к потеряшке",
+    "title": "Безопасно ли мне работать? осмотр на наличие опасностей, артефактов, блистеров от таблеток и пр., если опасность есть уходим в безопасное место, при прямой угрозе жизни нам-уходим в безопасное место, при прямой угрозе жизни потеряшке-решаем уходить самим или экстренно перемещать потеряшку за границу очага. (не нашли артефакты, явную угрозу ставим 0). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 4,
+    "publicText": "Безопасно ли мне работать? осмотр на наличие опасностей, артефактов, блистеров от таблеток и пр., если опасность есть уходим в безопасное место, при прямой угрозе жизни нам-уходим в безопасное место, при прямой угрозе жизни потеряшке-решаем уходить самим или экстренно перемещать потеряшку за границу очага.",
+    "instructorSegments": [
+      {
+        "text": "(не нашли артефакты, явную угрозу ставим 0). "
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Безопасно ли мне работать? осмотр на наличие опасностей, артефактов, блистеров от таблеток и пр., если опасность есть уходим в безопасное место, при прямой угрозе жизни нам-уходим в безопасное место, при прямой угрозе жизни потеряшке-решаем уходить самим или экстренно перемещать потеряшку за границу очага. "
+      },
+      {
+        "kind": "instructor",
+        "text": "(не нашли артефакты, явную угрозу ставим 0). "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L18",
+    "side": "main",
+    "row": 18,
+    "section": "Работа до прихода группы эвакуации",
+    "title": "Опрос потеряшки, вежливое общение с потеряшкой, продолжаем налаживать контакт. Не нужно пугать потеряшку. (грубо общаются с потеряшкой, ставим 0). \nБаллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 5,
+    "publicText": "Опрос потеряшки, вежливое общение с потеряшкой, продолжаем налаживать контакт. Не нужно пугать потеряшку.",
+    "instructorSegments": [
+      {
+        "text": " (грубо общаются с потеряшкой, ставим 0). \n"
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Опрос потеряшки, вежливое общение с потеряшкой, продолжаем налаживать контакт. Не нужно пугать потеряшку."
+      },
+      {
+        "kind": "instructor",
+        "text": " (грубо общаются с потеряшкой, ставим 0). \n"
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L19",
+    "side": "main",
+    "row": 19,
+    "section": "Работа до прихода группы эвакуации",
+    "title": "Проведение вторичного или визуального осмотра-опроса, т.е. оценка состояния потеряшки. (если проводят вторичный осмотр без блокирования руки, то 0 или если не опросили болит ли что-то, \"подвигай ручками, подвигай ножками\", то 0. Если упустили травму, ставим 0). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 6,
+    "publicText": "Проведение вторичного или визуального осмотра-опроса, т.е. оценка состояния потеряшки.",
+    "instructorSegments": [
+      {
+        "text": "(если проводят вторичный осмотр без блокирования руки, то 0 или если не опросили болит ли что-то, \"подвигай ручками, подвигай ножками\", то 0. Если упустили травму, ставим 0). "
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Проведение вторичного или визуального осмотра-опроса, т.е. оценка состояния потеряшки. "
+      },
+      {
+        "kind": "instructor",
+        "text": "(если проводят вторичный осмотр без блокирования руки, то 0 или если не опросили болит ли что-то, \"подвигай ручками, подвигай ножками\", то 0. Если упустили травму, ставим 0). "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L20",
+    "side": "main",
+    "row": 20,
+    "section": "Работа до прихода группы эвакуации",
+    "title": "Доклад в штаб. Запрос группы эвак. (не передали координаты, не запросили гр. эвак., ставим 0). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 7,
+    "publicText": "Доклад в штаб. Запрос группы эвак.",
+    "instructorSegments": [
+      {
+        "text": "(не передали координаты, не запросили гр. эвак., ставим 0). "
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Доклад в штаб. Запрос группы эвак. "
+      },
+      {
+        "kind": "instructor",
+        "text": "(не передали координаты, не запросили гр. эвак., ставим 0). "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L21",
+    "side": "main",
+    "row": 21,
+    "section": "Работа до прихода группы эвакуации",
+    "title": "Изолирование от земли. (не изолировали лапником, пенкой, подложкой под ламинат, ставим 0). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 8,
+    "publicText": "Изолирование от земли.",
+    "instructorSegments": [
+      {
+        "text": "(не изолировали лапником, пенкой, подложкой под ламинат, ставим 0). "
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Изолирование от земли. "
+      },
+      {
+        "kind": "instructor",
+        "text": "(не изолировали лапником, пенкой, подложкой под ламинат, ставим 0). "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L22",
+    "side": "main",
+    "row": 22,
+    "section": "Работа до прихода группы эвакуации",
+    "title": "Изолирование от внешней среды. (не изолировали спасодеялом или подобным, ставим 0). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 9,
+    "publicText": "Изолирование от внешней среды.",
+    "instructorSegments": [
+      {
+        "text": " (не изолировали спасодеялом или подобным, ставим 0). "
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Изолирование от внешней среды."
+      },
+      {
+        "kind": "instructor",
+        "text": " (не изолировали спасодеялом или подобным, ставим 0). "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L23",
+    "side": "main",
+    "row": 23,
+    "section": "Работа до прихода группы эвакуации",
+    "title": "Расчистка места для группы эвакуации, перемещение потеряшки в удобное место или подготовка для перемещения потеряшки в удобное место, когда придёт группа эвакуации. (место для статиста-потеряшки всегда выбирать такое, чтобы было неудобно работать группе эвакуации. Не выбрали удобное место для работы группы, ставим 0). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 10,
+    "publicText": "Расчистка места для группы эвакуации, перемещение потеряшки в удобное место или подготовка для перемещения потеряшки в удобное место, когда придёт группа эвакуации.",
+    "instructorSegments": [
+      {
+        "text": "(место для статиста-потеряшки всегда выбирать такое, чтобы было неудобно работать группе эвакуации. Не выбрали удобное место для работы группы, ставим 0). "
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Расчистка места для группы эвакуации, перемещение потеряшки в удобное место или подготовка для перемещения потеряшки в удобное место, когда придёт группа эвакуации. "
+      },
+      {
+        "kind": "instructor",
+        "text": "(место для статиста-потеряшки всегда выбирать такое, чтобы было неудобно работать группе эвакуации. Не выбрали удобное место для работы группы, ставим 0). "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L25",
+    "side": "main",
+    "row": 25,
+    "section": "Эвакуация",
+    "title": "Снятие/срезание мокрой/промерзшей одежды и любой обуви (не снимаем вместе с кожей!). (не сняли обувь, ставим 0). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 11,
+    "publicText": "Снятие/срезание мокрой/промерзшей одежды и любой обуви (не снимаем вместе с кожей!).",
+    "instructorSegments": [
+      {
+        "text": " (не сняли обувь, ставим 0). "
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Снятие/срезание мокрой/промерзшей одежды и любой обуви (не снимаем вместе с кожей!)."
+      },
+      {
+        "kind": "instructor",
+        "text": " (не сняли обувь, ставим 0). "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L26",
+    "side": "main",
+    "row": 26,
+    "section": "Эвакуация",
+    "title": "Защитные очки для потеряшки. (Нет / Есть). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 12,
+    "publicText": "Защитные очки для потеряшки.",
+    "instructorSegments": [
+      {
+        "text": " (Нет / Есть). "
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Защитные очки для потеряшки."
+      },
+      {
+        "kind": "instructor",
+        "text": " (Нет / Есть). "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L27",
+    "side": "main",
+    "row": 27,
+    "section": "Эвакуация",
+    "title": "Утепление головы шапкой, отдельным пледом, подобным\n(Не сделали / Сделали). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 13,
+    "publicText": "Утепление головы шапкой, отдельным пледом, подобнымж",
+    "instructorSegments": [
+      {
+        "text": "(Не сделали / Сделали). "
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Утепление головы шапкой, отдельным пледом, подобнымж\n"
+      },
+      {
+        "kind": "instructor",
+        "text": "(Не сделали / Сделали). "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L28",
+    "side": "main",
+    "row": 28,
+    "section": "Эвакуация",
+    "title": "Запаковка ног в отдельный плед. (Не сделали / Сделали).\nБаллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 14,
+    "publicText": "Запаковка ног в отдельный плед.",
+    "instructorSegments": [
+      {
+        "text": " (Не сделали / Сделали).\n"
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Запаковка ног в отдельный плед."
+      },
+      {
+        "kind": "instructor",
+        "text": " (Не сделали / Сделали).\n"
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L29",
+    "side": "main",
+    "row": 29,
+    "section": "Эвакуация",
+    "title": "Запаковка ног в отдельное спасодеяло.\n(Не сделали / Сделали).\nБаллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 15,
+    "publicText": "Запаковка ног в отдельное спасодеяло.",
+    "instructorSegments": [
+      {
+        "text": "(Не сделали / Сделали).\n"
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Запаковка ног в отдельное спасодеяло.\n"
+      },
+      {
+        "kind": "instructor",
+        "text": "(Не сделали / Сделали).\n"
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L30",
+    "side": "main",
+    "row": 30,
+    "section": "Эвакуация",
+    "title": "Убрать локти с линии корпуса, чтобы не отбить себе колени и потеряшке локти на мягких носилках. (Не сделали / Сделали).\nБаллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 16,
+    "publicText": "Убрать локти с линии корпуса, чтобы не отбить себе колени и потеряшке локти на мягких носилках.",
+    "instructorSegments": [
+      {
+        "text": "(Не сделали / Сделали).\n"
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Убрать локти с линии корпуса, чтобы не отбить себе колени и потеряшке локти на мягких носилках. "
+      },
+      {
+        "kind": "instructor",
+        "text": "(Не сделали / Сделали).\n"
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L31",
+    "side": "main",
+    "row": 31,
+    "section": "Эвакуация",
+    "title": "Дополнительное утепление шеи отдельным пледом, шарфом, пр. (Не сделали / Сделали). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 17,
+    "publicText": "Дополнительное утепление шеи отдельным пледом, шарфом, пр.",
+    "instructorSegments": [
+      {
+        "text": "(Не сделали / Сделали). "
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Дополнительное утепление шеи отдельным пледом, шарфом, пр. "
+      },
+      {
+        "kind": "instructor",
+        "text": "(Не сделали / Сделали). "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L32",
+    "side": "main",
+    "row": 32,
+    "section": "Эвакуация",
+    "title": "Запаковка всего потеряшки в плед. Если два маленьких пледа-запаковываем так, чтобы заменить один большой плед, которого хватит и на ноги, и на голову. (Не сделали / Сделали).\nБаллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 18,
+    "publicText": "Запаковка всего потеряшки в плед. Если два маленьких пледа-запаковываем так, чтобы заменить один большой плед, которого хватит и на ноги, и на голову.",
+    "instructorSegments": [
+      {
+        "text": "(Не сделали / Сделали).\n"
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Запаковка всего потеряшки в плед. Если два маленьких пледа-запаковываем так, чтобы заменить один большой плед, которого хватит и на ноги, и на голову. "
+      },
+      {
+        "kind": "instructor",
+        "text": "(Не сделали / Сделали).\n"
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L33",
+    "side": "main",
+    "row": 33,
+    "section": "Эвакуация",
+    "title": "Запаковка всего потеряшки в спасодеяло. Если два маленьких спасодеяла, запаковываем так, чтобы заменить одно большое спасодеяло, которого хватит и на ноги, и на голову.\n(Не сделали / Сделали). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 19,
+    "publicText": "Запаковка всего потеряшки в спасодеяло. Если два маленьких спасодеяла, запаковываем так, чтобы заменить одно большое спасодеяло, которого хватит и на ноги, и на голову.",
+    "instructorSegments": [
+      {
+        "text": "(Не сделали / Сделали). "
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Запаковка всего потеряшки в спасодеяло. Если два маленьких спасодеяла, запаковываем так, чтобы заменить одно большое спасодеяло, которого хватит и на ноги, и на голову.\n"
+      },
+      {
+        "kind": "instructor",
+        "text": "(Не сделали / Сделали). "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L34",
+    "side": "main",
+    "row": 34,
+    "section": "Эвакуация",
+    "title": "Укладывание пострадавшего на носилки (если голова не на носилках, ставим 0). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 20,
+    "publicText": "Укладывание пострадавшего на носилки",
+    "instructorSegments": [
+      {
+        "text": "(если голова не на носилках, ставим 0). "
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1. "
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Укладывание пострадавшего на носилки "
+      },
+      {
+        "kind": "instructor",
+        "text": "(если голова не на носилках, ставим 0). "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1. "
+      }
+    ]
+  },
+  {
+    "id": "L35",
+    "side": "main",
+    "row": 35,
+    "section": "Эвакуация",
+    "title": "Осмотр места перед уходом группы эвакуации, не нужно: забывать оборудование, вещи, оставлять после себя мусор и пр. (забыли, ставим 0). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 21,
+    "publicText": "Осмотр места перед уходом группы эвакуации, не нужно: забывать оборудование, вещи, оставлять после себя мусор и пр. .",
+    "instructorSegments": [
+      {
+        "text": "(забыли, ставим 0)"
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Осмотр места перед уходом группы эвакуации, не нужно: забывать оборудование, вещи, оставлять после себя мусор и пр. "
+      },
+      {
+        "kind": "instructor",
+        "text": "(забыли, ставим 0)"
+      },
+      {
+        "kind": "public",
+        "text": ". "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L36",
+    "side": "main",
+    "row": 36,
+    "section": "Эвакуация",
+    "title": "Подъем пострадавшего на носилках, у каждого работают ноги, спина не должна работать (1 поисковик с кривой спиной- ставим -1, если у него же несколько раз так - не суммируем). \nБаллы: \"1\" - если спина прямая у всех.\n \"-1\" суммируется за каждого человека с кривой спиной.",
+    "type": "penalty",
+    "help": "Количество участников с нарушением",
+    "fail": false,
+    "number": 22,
+    "publicText": "Подъем пострадавшего на носилках, у каждого работают ноги, спина не должна работать",
+    "instructorSegments": [
+      {
+        "text": "(1 поисковик с кривой спиной- ставим -1, если у него же несколько раз так - не суммируем). "
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы: \"1\" - если спина прямая у всех.\n \"-1\" суммируется за каждого человека с кривой спиной."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Подъем пострадавшего на носилках, у каждого работают ноги, спина не должна работать "
+      },
+      {
+        "kind": "instructor",
+        "text": "(1 поисковик с кривой спиной- ставим -1, если у него же несколько раз так - не суммируем). "
+      },
+      {
+        "kind": "public",
+        "text": "\n"
+      },
+      {
+        "kind": "score",
+        "text": "Баллы: \"1\" - если спина прямая у всех.\n \"-1\" суммируется за каждого человека с кривой спиной."
+      }
+    ]
+  },
+  {
+    "id": "L38",
+    "side": "main",
+    "row": 38,
+    "section": "Эвакуация",
+    "title": "Несём ногами вперед, по подъему головой вперед. \nБаллы: \"1\" - если всегда правильно.\n \"-1\" суммируется за каждый раз, когда неправильно.",
+    "type": "penalty",
+    "help": "Количество неправильных переносов",
+    "fail": false,
+    "number": 23,
+    "publicText": "Несём ногами вперед, по подъему головой вперед.",
+    "instructorSegments": [],
+    "scoreSegments": [
+      {
+        "text": "Баллы: \"1\" - если всегда правильно.\n \"-1\" суммируется за каждый раз, когда неправильно."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Несём ногами вперед, по подъему головой вперед. \n"
+      },
+      {
+        "kind": "score",
+        "text": "Баллы: \"1\" - если всегда правильно.\n \"-1\" суммируется за каждый раз, когда неправильно."
+      }
+    ]
+  },
+  {
+    "id": "L39",
+    "side": "main",
+    "row": 39,
+    "section": "Эвакуация",
+    "title": "Контроль положения пострадавшего на носилках, не поднимать высоко ноги или голову. Носилки примерно горизонтально. (сильно задирают, ставим 0). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 24,
+    "publicText": "Контроль положения пострадавшего на носилках, не поднимать высоко ноги или голову. Носилки примерно горизонтально.",
+    "instructorSegments": [
+      {
+        "text": "(сильно задирают, ставим 0). "
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Контроль положения пострадавшего на носилках, не поднимать высоко ноги или голову. Носилки примерно горизонтально. "
+      },
+      {
+        "kind": "instructor",
+        "text": "(сильно задирают, ставим 0). "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L40",
+    "side": "main",
+    "row": 40,
+    "section": "Эвакуация",
+    "title": "Если мягкие носилки, то каждый раз осмотр площадки перед опусканием носилок с потеряшкой. (один раз не осмотрели площадку, ставим 0, больше не суммируем). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 25,
+    "publicText": "Если мягкие носилки, то каждый раз осмотр площадки перед опусканием носилок с потеряшкой. .",
+    "instructorSegments": [
+      {
+        "text": "(один раз не осмотрели площадку, ставим 0, больше не суммируем)"
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Если мягкие носилки, то каждый раз осмотр площадки перед опусканием носилок с потеряшкой. "
+      },
+      {
+        "kind": "instructor",
+        "text": "(один раз не осмотрели площадку, ставим 0, больше не суммируем)"
+      },
+      {
+        "kind": "public",
+        "text": ". "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "L41",
+    "side": "main",
+    "row": 41,
+    "section": "Эвакуация",
+    "title": "В случае потери сознания потеряшкой: 1.группа стоп, 2.опускаем на проверенную поверхность, 3.проверка сознания, 4.проверка дыхания, 5.дыхание есть-повернули на бок или запрокинули голову (дыхания нет-СЛР), 6.доклад в штаб. (статист 1 раз \"теряет\" сознание когда уже будут нести, инструктор возобновляет эвакуацию после всех действий группы по алгоритмы). Баллы от 0 до 6.",
+    "type": "scale",
+    "help": "Оценка от 0 до 6 по шагам алгоритма",
+    "fail": false,
+    "number": 26,
+    "publicText": "В случае потери сознания потеряшкой: 1.группа стоп, 2.опускаем на проверенную поверхность, 3.проверка сознания, 4.проверка дыхания, 5.дыхание есть-повернули на бок или запрокинули голову (дыхания нет-СЛР), 6.доклад в штаб.",
+    "instructorSegments": [
+      {
+        "text": "(статист 1 раз \"теряет\" сознание когда уже будут нести, инструктор возобновляет эвакуацию после всех действий группы по алгоритмы)."
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 6."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "В случае потери сознания потеряшкой: 1.группа стоп, 2.опускаем на проверенную поверхность, 3.проверка сознания, 4.проверка дыхания, 5.дыхание есть-повернули на бок или запрокинули голову (дыхания нет-СЛР), 6.доклад в штаб. "
+      },
+      {
+        "kind": "instructor",
+        "text": "(статист 1 раз \"теряет\" сознание когда уже будут нести, инструктор возобновляет эвакуацию после всех действий группы по алгоритмы)."
+      },
+      {
+        "kind": "public",
+        "text": " "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 6."
+      }
+    ]
+  },
+  {
+    "id": "R18",
+    "side": "cannotForget",
+    "row": 18,
+    "section": "Нельзя забыть",
+    "title": "Наличие медицинских перчаток у всех, кто работает с потеряшкой, несёт носилки, приходит из ближней разведки на замену тем, кто несёт носилки. В случае повреждения перчаток их замена. \nБаллы: \"1\" - перчатки были у всех, порванные перчатки меняли.\n \"-1\" сумма за каждого без перчаток или в порванных перчатках.",
+    "type": "penalty",
+    "help": "При 0 нарушений = +1 балл · за каждое нарушение = −1 балл",
+    "fail": false,
+    "number": 1,
+    "publicText": "Наличие медицинских перчаток у всех, кто работает с потеряшкой, несёт носилки, приходит из ближней разведки на замену тем, кто несёт носилки. В случае повреждения перчаток их замена.",
+    "instructorSegments": [
+      {
+        "text": "\n"
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы: \"1\" - перчатки были у всех, порванные перчатки меняли.\n \"-1\" сумма за каждого без перчаток или в порванных перчатках."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Наличие медицинских перчаток у всех, кто работает с потеряшкой, несёт носилки, приходит из ближней разведки на замену тем, кто несёт носилки. В случае повреждения перчаток их замена. "
+      },
+      {
+        "kind": "instructor",
+        "text": "\n"
+      },
+      {
+        "kind": "score",
+        "text": "Баллы: \"1\" - перчатки были у всех, порванные перчатки меняли.\n \"-1\" сумма за каждого без перчаток или в порванных перчатках."
+      }
+    ]
+  },
+  {
+    "id": "R19",
+    "side": "cannotForget",
+    "row": 19,
+    "section": "Нельзя забыть",
+    "title": "Наличие СИЗ, очков защищающих глаза поисковиков, ХБ/тактических перчаток.\nБаллы: \"1\" - защитные очки были у всех.\n \"-1\" за каждого без защитных очков.",
+    "type": "penalty",
+    "help": "При 0 нарушений = +1 балл · за каждое нарушение = −1 балл",
+    "fail": false,
+    "number": 2,
+    "publicText": "Наличие СИЗ, очков защищающих глаза поисковиков, ХБ/тактических перчаток.\nБаллы: \"1\" - защитные очки были у всех.\n \"-1\" за каждого без защитных очков.",
+    "instructorSegments": [],
+    "scoreSegments": [],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Наличие СИЗ, очков защищающих глаза поисковиков, ХБ/тактических перчаток.\nБаллы: \"1\" - защитные очки были у всех.\n \"-1\" за каждого без защитных очков."
+      }
+    ]
+  },
+  {
+    "id": "R20",
+    "side": "cannotForget",
+    "row": 20,
+    "section": "Нельзя забыть",
+    "title": "Не должно быть \"балагана\" (явный \"балаган\", ставим 0).\nБаллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 3,
+    "publicText": "Не должно быть \"балагана\"",
+    "instructorSegments": [
+      {
+        "text": "(явный \"балаган\", ставим 0)."
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Не должно быть \"балагана\" "
+      },
+      {
+        "kind": "instructor",
+        "text": "(явный \"балаган\", ставим 0)."
+      },
+      {
+        "kind": "public",
+        "text": "\n"
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "R21",
+    "side": "cannotForget",
+    "row": 21,
+    "section": "Нельзя забыть",
+    "title": "Не должно быть конфликтов. (конфликты, ставим 0).\nБаллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 4,
+    "publicText": "Не должно быть конфликтов.",
+    "instructorSegments": [
+      {
+        "text": "(конфликты, ставим 0)."
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Не должно быть конфликтов. "
+      },
+      {
+        "kind": "instructor",
+        "text": "(конфликты, ставим 0)."
+      },
+      {
+        "kind": "public",
+        "text": "\n"
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "R22",
+    "side": "cannotForget",
+    "row": 22,
+    "section": "Нельзя забыть",
+    "title": "Обходим потеряшку со стороны ног. Не перешагиваем через потеряшку. (перешагнули через потеряшку - 0). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 5,
+    "publicText": "Обходим потеряшку со стороны ног. Не перешагиваем через потеряшку.",
+    "instructorSegments": [
+      {
+        "text": "(перешагнули через потеряшку - 0)."
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Обходим потеряшку со стороны ног. Не перешагиваем через потеряшку. "
+      },
+      {
+        "kind": "instructor",
+        "text": "(перешагнули через потеряшку - 0)."
+      },
+      {
+        "kind": "public",
+        "text": " "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "R23",
+    "side": "cannotForget",
+    "row": 23,
+    "section": "Нельзя забыть",
+    "title": "Не курить рядом самим и не давать курить потеряшке (если потеряшка достал свои сигареты и сам их подкурил, то не нужно выбивать из рук потеряшки его сигареты, мягко попробовали отговорить, не помогло, контролируем состояние и сознание). \nБаллы: \"1\" если соблюдали все рекомендации.\n\"-1\" суммируется за каждого поисковика, при котором потеряшке вручили свои (поисковиков) сигареты.",
+    "type": "penalty",
+    "help": "При 0 нарушений = +1 балл · за каждое нарушение = −1 балл",
+    "fail": false,
+    "number": 6,
+    "publicText": "Не курить рядом самим и не давать курить потеряшке (если потеряшка достал свои сигареты и сам их подкурил, то не нужно выбивать из рук потеряшки его сигареты, мягко попробовали отговорить, не помогло, контролируем состояние и сознание).",
+    "instructorSegments": [],
+    "scoreSegments": [
+      {
+        "text": "Баллы: \"1\" если соблюдали все рекомендации.\n\"-1\" суммируется за каждого поисковика, при котором потеряшке вручили свои (поисковиков) сигареты. "
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Не курить рядом самим и не давать курить потеряшке (если потеряшка достал свои сигареты и сам их подкурил, то не нужно выбивать из рук потеряшки его сигареты, мягко попробовали отговорить, не помогло, контролируем состояние и сознание). \n"
+      },
+      {
+        "kind": "score",
+        "text": "Баллы: \"1\" если соблюдали все рекомендации.\n\"-1\" суммируется за каждого поисковика, при котором потеряшке вручили свои (поисковиков) сигареты. "
+      }
+    ]
+  },
+  {
+    "id": "R24",
+    "side": "cannotForget",
+    "row": 24,
+    "section": "Нельзя забыть",
+    "title": "Не передавать над потеряшкой крупные/опасные предметы.\n(считается 1 раз). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 7,
+    "publicText": "Не передавать над потеряшкой крупные/опасные предметы.",
+    "instructorSegments": [
+      {
+        "text": "(считается 1 раз)."
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": " Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Не передавать над потеряшкой крупные/опасные предметы.\n"
+      },
+      {
+        "kind": "instructor",
+        "text": "(считается 1 раз)."
+      },
+      {
+        "kind": "score",
+        "text": " Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "R25",
+    "side": "cannotForget",
+    "row": 25,
+    "section": "Нельзя забыть",
+    "title": "Эвакуацией руководит 1 человек, советовать и помогать можно и нужно, только не превращать всё в балаган и не создавать конфликты (нет явного старшего, ставим 0). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 8,
+    "publicText": "Эвакуацией руководит 1 человек, советовать и помогать можно и нужно, только не превращать всё в балаган и не создавать конфликты",
+    "instructorSegments": [
+      {
+        "text": "(нет явного старшего, ставим 0). "
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Эвакуацией руководит 1 человек, советовать и помогать можно и нужно, только не превращать всё в балаган и не создавать конфликты "
+      },
+      {
+        "kind": "instructor",
+        "text": "(нет явного старшего, ставим 0). "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "R26",
+    "side": "cannotForget",
+    "row": 26,
+    "section": "Нельзя забыть",
+    "title": "Наличие скотча (лучше серого, армированного). Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 9,
+    "publicText": "Наличие скотча (лучше серого, армированного).",
+    "instructorSegments": [],
+    "scoreSegments": [
+      {
+        "text": " Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Наличие скотча (лучше серого, армированного)."
+      },
+      {
+        "kind": "score",
+        "text": " Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "R27",
+    "side": "cannotForget",
+    "row": 27,
+    "section": "Нельзя забыть",
+    "title": "Наличие ножниц атравматических. Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 10,
+    "publicText": "Наличие ножниц атравматических.",
+    "instructorSegments": [],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Наличие ножниц атравматических. "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1."
+      }
+    ]
+  },
+  {
+    "id": "R28",
+    "side": "cannotForget",
+    "row": 28,
+    "section": "Нельзя забыть",
+    "title": "Пледы, спасодеяла и пр. сбоку (просим потеряшку повернуться) или переложить на все слои. Если травмы или сильное переохлаждение-подъем потеряшки только на руках группой, подача всех слоев только с ног. (0 при некорректной подаче)  Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 11,
+    "publicText": "Пледы, спасодеяла и пр. сбоку (просим потеряшку повернуться) или переложить на все слои. Если травмы или сильное переохлаждение-подъем потеряшки только на руках группой, подача всех слоев только с ног.",
+    "instructorSegments": [
+      {
+        "text": " (0 при некорректной подаче)"
+      }
+    ],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1. "
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Пледы, спасодеяла и пр. сбоку (просим потеряшку повернуться) или переложить на все слои. Если травмы или сильное переохлаждение-подъем потеряшки только на руках группой, подача всех слоев только с ног."
+      },
+      {
+        "kind": "instructor",
+        "text": " (0 при некорректной подаче)"
+      },
+      {
+        "kind": "public",
+        "text": "  "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1. "
+      }
+    ]
+  },
+  {
+    "id": "R29",
+    "side": "cannotForget",
+    "row": 29,
+    "section": "Нельзя забыть",
+    "title": "Минимальное количество слоёв для утепления: летом минимум 2 слоя, зимой минимум 3 слоя. 1 слой утепления-это большой плед на всё тело+большое спасодеяло на всё тело. Спальник является 1 слоем утепления. Отдельное утепление ног за слой не считается. Внимательно относимся к жалобам потеряшки, в том числе на холод или жару. Если перегрев-утеплять не будем.\nБаллы: \"1\" выбрали правильное количество слоёв.\n\"-1\" суммируется за каждый слой, в который не утеплили.",
+    "type": "penalty",
+    "help": "При 0 нарушений = +1 балл · за каждое нарушение = −1 балл",
+    "fail": false,
+    "number": 12,
+    "publicText": "Минимальное количество слоёв для утепления: летом минимум 2 слоя, зимой минимум 3 слоя. 1 слой утепления-это большой плед на всё тело+большое спасодеяло на всё тело. Спальник является 1 слоем утепления. Отдельное утепление ног за слой не считается. Внимательно относимся к жалобам потеряшки, в том числе на холод или жару. Если перегрев-утеплять не будем.",
+    "instructorSegments": [],
+    "scoreSegments": [
+      {
+        "text": "Баллы: \"1\" выбрали правильное количество слоёв.\n\"-1\" суммируется за каждый слой, в который не утеплили."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Минимальное количество слоёв для утепления: летом минимум 2 слоя, зимой минимум 3 слоя. 1 слой утепления-это большой плед на всё тело+большое спасодеяло на всё тело. Спальник является 1 слоем утепления. Отдельное утепление ног за слой не считается. Внимательно относимся к жалобам потеряшки, в том числе на холод или жару. Если перегрев-утеплять не будем.\n"
+      },
+      {
+        "kind": "score",
+        "text": "Баллы: \"1\" выбрали правильное количество слоёв.\n\"-1\" суммируется за каждый слой, в который не утеплили."
+      }
+    ]
+  },
+  {
+    "id": "R30",
+    "side": "cannotForget",
+    "row": 30,
+    "section": "Нельзя забыть",
+    "title": "Контроль головы потеряшки (поворот, подъем, опускания).\nБаллы: \"1\" - если рекомендации соблюдены.\n \"0\" если не соблюдали рекомендации.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 13,
+    "publicText": "Контроль головы потеряшки (поворот, подъем, опускания).\nБаллы: \"1\" - если рекомендации соблюдены.\n \"0\" если не соблюдали рекомендации.",
+    "instructorSegments": [],
+    "scoreSegments": [],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Контроль головы потеряшки (поворот, подъем, опускания).\nБаллы: \"1\" - если рекомендации соблюдены.\n \"0\" если не соблюдали рекомендации."
+      }
+    ]
+  },
+  {
+    "id": "R31",
+    "side": "cannotForget",
+    "row": 31,
+    "section": "Нельзя забыть",
+    "title": "Отсутствие дыр в упаковке в начале эвакуации и когда уже принесли в штаб. Баллы от 0 до 1.",
+    "type": "binary",
+    "help": "Да = 1 балл · Нет = 0 баллов",
+    "fail": false,
+    "number": 14,
+    "publicText": "Отсутствие дыр в упаковке в начале эвакуации и когда уже принесли в штаб.",
+    "instructorSegments": [],
+    "scoreSegments": [
+      {
+        "text": "Баллы от 0 до 1. "
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Отсутствие дыр в упаковке в начале эвакуации и когда уже принесли в штаб. "
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от 0 до 1. "
+      }
+    ]
+  },
+  {
+    "id": "R32",
+    "side": "cannotForget",
+    "row": 32,
+    "section": "Нельзя забыть",
+    "title": "Контроль сознания потеряшки не реже 1 раза в минуту. (Если контроль сознания не осуществлялся больше 1 минуты, то вся эвакуация считается проваленной, все баллы умножаются на 0). \nБаллы от \"умножить на ноль\" до \"1\".",
+    "type": "critical",
+    "help": "Нет = 0 баллов и провал всей эвакуации",
+    "fail": true,
+    "number": 15,
+    "publicText": "Контроль сознания потеряшки не реже 1 раза в минуту. (Если контроль сознания не осуществлялся больше 1 минуты, то вся эвакуация считается проваленной, все баллы умножаются на 0).",
+    "instructorSegments": [],
+    "scoreSegments": [
+      {
+        "text": "Баллы от \"умножить на ноль\" до \"1\"."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Контроль сознания потеряшки не реже 1 раза в минуту. (Если контроль сознания не осуществлялся больше 1 минуты, то вся эвакуация считается проваленной, все баллы умножаются на 0). \n"
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от \"умножить на ноль\" до \"1\"."
+      }
+    ]
+  },
+  {
+    "id": "R33",
+    "side": "cannotForget",
+    "row": 33,
+    "section": "Нельзя забыть",
+    "title": "Если эвакуация продолжается при потере сознания потеряшкой (Вся эвакуация считается проваленной, все баллы умножаются на 0).\nБаллы от \"умножить на ноль\" до \"1\".",
+    "type": "critical",
+    "help": "Нет = 0 баллов и провал всей эвакуации",
+    "fail": true,
+    "number": 16,
+    "publicText": "Если эвакуация продолжается при потере сознания потеряшкой (Вся эвакуация считается проваленной, все баллы умножаются на 0).",
+    "instructorSegments": [],
+    "scoreSegments": [
+      {
+        "text": "Баллы от \"умножить на ноль\" до \"1\"."
+      }
+    ],
+    "displaySegments": [
+      {
+        "kind": "public",
+        "text": "Если эвакуация продолжается при потере сознания потеряшкой (Вся эвакуация считается проваленной, все баллы умножаются на 0).\n"
+      },
+      {
+        "kind": "score",
+        "text": "Баллы от \"умножить на ноль\" до \"1\"."
+      }
+    ]
+  }
+]</script>
+<script>
+'use strict';
+const CRITERIA = JSON.parse(document.getElementById('criteria-data').textContent);
+const DB_KEY = 'evacuation_prototype_v1';
+const $ = (s,root=document)=>root.querySelector(s);
+const $$ = (s,root=document)=>Array.from(root.querySelectorAll(s));
+let db = loadDb();
+let activeId = db.groups[0]?.id || null;
+let toastTimer = null;
+let tickTimer = null;
+
+
+function showTab(id){$$('.app-tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));$$('.page-panel').forEach(p=>p.classList.toggle('active',p.id===id));if(id==='ratingPage'){renderRating();renderCourseList();}if(id==='evaluationPage')renderGroups();window.scrollTo({top:0,behavior:'instant'});}
+$$('.app-tab').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+$('#cancelDelete').addEventListener('click',closeDeleteModal);$('#confirmDelete').addEventListener('click',deleteCurrentGroup);$('#deleteModal').addEventListener('click',e=>{if(e.target.id==='deleteModal')closeDeleteModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDeleteModal();if($('#exportCourseModal').classList.contains('show'))closeCourseExportModal();if($('#renameGroupModal').classList.contains('show'))closeRenameGroup()}});
+
+function uid(){return 'g_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,9)}
+function today(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function defaultName(n,date){return `Лиса ${n} · ${date.split('-').reverse().join('.')}`}
+function nextGroupNo(){const nums=db.groups.map(g=>{const m=String(g.name||'').match(/^Лиса\s+(\d+)/i);return m?Number(m[1]):0});return Math.max(db.groups.length,...nums)+1}
+function blankGroup(n){const date=today();return {id:uid(),scoreSchema:2,name:defaultName(n,date),date,region:'Москва и МО',participants:'',instructor:'',globalComment:'',answers:{},comments:{},timer:{startedAt:null,elapsedSeconds:null},forcedFail:false,createdAt:Date.now(),updatedAt:Date.now()}}
+function normalizeGroup(g){const answers={...(g.answers||{})};if((g.scoreSchema||1)<2){for(const c of CRITERIA){if(c.type==='penalty'&&answers[c.id]!=null){const old=Number(answers[c.id]);answers[c.id]=old===0?1:-Math.abs(old)}}}return {...g,scoreSchema:2,region:g.region===undefined?'Москва и МО':(g.region||''),participants:g.participants||'',instructor:g.instructor||'',globalComment:g.globalComment||'',answers,comments:g.comments||{},timer:{startedAt:null,elapsedSeconds:null,...(g.timer||{})},forcedFail:!!g.forcedFail,updatedAt:g.updatedAt||g.createdAt||Date.now()}}
+function normalizeCourse(c){return {...c,id:c.id||courseKey(c),title:c.title||'Занятие без названия',date:c.date||'',region:c.region||'',groups:Array.isArray(c.groups)?c.groups.map(normalizeGroup):[],updatedAt:c.updatedAt||Date.now()}}
+function courseKey(c){return [String(c.title||'').trim().toLocaleLowerCase('ru'),String(c.date||''),String(c.region||'').trim().toLocaleLowerCase('ru')].join('|')}
+function loadDb(){try{const x=JSON.parse(localStorage.getItem(DB_KEY)||'{}');return {version:2,groups:Array.isArray(x.groups)?x.groups.map(normalizeGroup):[],ratingArchive:Array.isArray(x.ratingArchive)?x.ratingArchive:[],courses:Array.isArray(x.courses)?x.courses.map(normalizeCourse):[]}}catch(e){return {version:2,groups:[],ratingArchive:[],courses:[]}}}
+function persist(){localStorage.setItem(DB_KEY,JSON.stringify(db));}
+function current(){return db.groups.find(g=>g.id===activeId)||null}
+function changed(){const g=current();if(g)g.updatedAt=Date.now();persist();renderSummary();renderGroups();renderRating();}
+function notify(msg){const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2100)}
+function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function elapsedSeconds(g){if(!g.timer)return null;if(g.timer.elapsedSeconds!=null)return Math.max(0,g.timer.elapsedSeconds);if(g.timer.startedAt)return Math.max(0,Math.floor((Date.now()-g.timer.startedAt)/1000));return null}
+function formatDuration(sec){if(sec==null)return '—';sec=Math.max(0,Math.floor(sec));return `${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`}
+function parseDuration(s){const t=String(s||'').trim();if(!t)return null;const m=t.match(/^(\d{1,4}):(\d{1,2})$/);if(!m)return null;const seconds=Number(m[2]);if(seconds>59)return null;return Number(m[1])*60+seconds}
+function countLabel(c){return ({L36:'Людей с кривой спиной',L38:'Ошибок при переносе',R18:'Участников без целых перчаток',R19:'Участников без очков',R23:'Поисковиков, давших свои сигареты',R29:'Недостающих слоёв'})[c.id]||'Количество нарушений'}
+function answerScore(c,v){if(v==null||v==='')return null;if(c.type==='binary'||c.type==='critical')return Number(v);if(c.type==='penalty'){const n=Math.floor(Number(v));return Math.max(-99,Math.min(1,n))}if(c.type==='scale')return Math.max(0,Math.min(6,Math.floor(Number(v))));return null}
+function scoreData(g){let main=0,side=0,marked=0,failedReasons=[];for(const c of CRITERIA){const v=g.answers?.[c.id];const s=answerScore(c,v);if(s!==null){marked++;if(c.side==='main')main+=s;else side+=s;}if(c.type==='critical'&&v!==null&&v!==undefined&&Number(v)===0)failedReasons.push(c.id==='R32'?'Контроль сознания реже 1 раза в минуту':'Эвакуацию продолжили после потери сознания');}
+const raw=main+side;const sec=elapsedSeconds(g);const timeAdj=sec==null?0:(30-sec/60)*0.5;const adjusted=raw+timeAdj;const failed=!!g.forcedFail||failedReasons.length>0;return {main,side,raw,sec,timeAdj,adjusted,final:failed?0:adjusted,failed,failedReasons,marked,total:CRITERIA.length};}
+function fmtScore(n){return Number(n).toFixed(1).replace('.',',')}
+function displayTitle(c){return c.publicText||c.title||''}
+function renderTextSegments(parts){return (parts||[]).map(p=>`<span class="source-instructor">${escapeHtml(p.text||'').replace(/\n/g,'<br>')}</span>`).join('')}
+function renderScoreSegments(parts){return (parts||[]).map(p=>`<strong><em class="source-score">${escapeHtml(p.text||'').replace(/\n/g,'<br>')}</em></strong>`).join('')}
+document.addEventListener('click',e=>{if(!e.target.closest('.group-menu'))$$('.group-menu[open]').forEach(m=>m.open=false)});
+window.addEventListener('scroll',()=>$$('.group-menu[open]').forEach(m=>m.open=false),true);
+function groupNo(g){const n=db.groups.findIndex(x=>x.id===g.id);return n+1}
+function renderGroups(){const strip=$('#groupStrip');strip.innerHTML='';db.groups.forEach(g=>{const wrap=document.createElement('div');wrap.className='group-chip-wrap';const b=document.createElement('button');b.className='group-chip'+(g.id===activeId?' active':'');b.textContent=g.name||`Лиса ${groupNo(g)}`;b.title=[g.date,g.region].filter(Boolean).join(' · ');b.onclick=()=>{activeId=g.id;render();};wrap.appendChild(b);const menu=document.createElement('details');menu.className='group-menu';menu.innerHTML=`<summary aria-label="Меню группы ${escapeHtml(g.name||'') }" title="Меню группы">⋮</summary><div class="group-menu-pop"><button class="btn ghost" type="button" data-group-action="rename">Переименовать</button><button class="btn ghost" type="button" data-group-action="share">Поделиться</button><button class="btn danger" type="button" data-group-action="delete">Удалить</button></div>`;menu.querySelector('[data-group-action="rename"]').onclick=()=>{menu.open=false;renameGroup(g.id)};menu.querySelector('[data-group-action="share"]').onclick=()=>{menu.open=false;exportGroup(g)};menu.querySelector('[data-group-action="delete"]').onclick=()=>{activeId=g.id;menu.open=false;requestDeleteGroup()};menu.addEventListener('toggle',()=>{const pop=menu.querySelector('.group-menu-pop');if(menu.open){requestAnimationFrame(()=>{const r=menu.querySelector('summary').getBoundingClientRect();const h=pop.getBoundingClientRect().height||120;const left=Math.max(8,Math.min(r.right-170,window.innerWidth-178));const top=(r.bottom+h+8>window.innerHeight)?Math.max(8,r.top-h-6):r.bottom+5;pop.style.left=left+'px';pop.style.top=top+'px';pop.style.right='auto'});}else{pop.style.left='';pop.style.top='';pop.style.right=''}});wrap.appendChild(menu);strip.appendChild(wrap)});const add=document.createElement('button');add.className='group-chip add';add.textContent='＋ Новая группа';add.onclick=addGroup;strip.appendChild(add)}
+let renameTargetId=null;function renameGroup(id){const g=db.groups.find(x=>x.id===id);if(!g)return;renameTargetId=id;$('#renameGroupInput').value=g.name||'';const modal=$('#renameGroupModal');modal.classList.add('show');modal.setAttribute('aria-hidden','false');setTimeout(()=>$('#renameGroupInput').focus(),40)}function closeRenameGroup(){const modal=$('#renameGroupModal');modal.classList.remove('show');modal.setAttribute('aria-hidden','true');renameTargetId=null}function confirmRenameGroup(){const g=db.groups.find(x=>x.id===renameTargetId);const name=$('#renameGroupInput').value.trim();if(!g)return closeRenameGroup();if(!name){notify('Название группы не может быть пустым');return}g.name=name;g.updatedAt=Date.now();persist();closeRenameGroup();render();notify('Название группы изменено')}
+
+function renderSummary(){const g=current();if(!g)return;const s=scoreData(g);$('#ratingCount').textContent=`${db.groups.length+db.ratingArchive.length} записей`;
+const banner=$('#failBanner');if(banner){banner.classList.toggle('show',s.failed);banner.textContent=s.failed?`ПРОВАЛ ЭВАКУАЦИИ · Баллы сохранены. Итог до обнуления: ${fmtScore(s.adjusted)}. Зачётный итог: 0. Причина: ${[...s.failedReasons,...(g.forcedFail?['отметка инструктора']:[])].join('; ')||'отмечено инструктором'}.`:''}
+const raw=$('#rawScore');if(raw)raw.textContent=fmtScore(s.raw);const time=$('#timeScore');if(time)time.textContent=(s.sec==null?'—':fmtScore(s.timeAdj));const final=$('#finalScore');if(final){final.textContent=s.failed?'0,0':fmtScore(s.adjusted);final.className='v '+(s.failed?'bad':'good')};const progress=$('#progressScore');if(progress)progress.textContent=`Отмечено ${s.marked} из ${s.total} · основной ${fmtScore(s.main)}/31 · справа ${fmtScore(s.side)}/16`;const timer=$('#summaryTimer');if(timer)timer.textContent=formatDuration(s.sec);const stickyTimer=$('#timerLive');if(stickyTimer)stickyTimer.textContent=formatDuration(s.sec);const status=$('#timerStatus');if(status)status.textContent=g.timer.startedAt&&g.timer.elapsedSeconds==null?'Секундомер идёт':'Старт — прибытие группы · стоп — выдвижение в штаб';const timerCard=$('#timerCard');if(timerCard)timerCard.classList.toggle('running',!!(g.timer.startedAt&&g.timer.elapsedSeconds==null));const startBtn=$('#timerStartStop');if(startBtn)startBtn.textContent=g.timer.startedAt&&g.timer.elapsedSeconds==null?'Стоп: группа выдвинулась':'Старт: группа прибыла';const forced=$('#forcedFailBtn');if(forced){forced.classList.toggle('active',!!g.forcedFail);forced.setAttribute('aria-pressed',g.forcedFail?'true':'false');forced.textContent=g.forcedFail?'⚑ Провал отмечен':'⚑ Отметить провал';}const gname=$('#groupName');if(gname&&document.activeElement!==gname)gname.value=g.name||'';const date=$('#groupDate');if(date&&document.activeElement!==date)date.value=g.date||'';const instr=$('#instructor');if(instr&&document.activeElement!==instr)instr.value=g.instructor||'';const region=$('#region');if(region&&document.activeElement!==region)region.value=g.region??'Москва и МО';const members=$('#participants');if(members&&document.activeElement!==members)members.value=g.participants||'';const global=$('#globalComment');if(global&&document.activeElement!==global)global.value=g.globalComment||'';const mins=$('#manualMinutes'),secs=$('#manualSeconds');if(g.timer.elapsedSeconds!=null){const parts=formatDuration(g.timer.elapsedSeconds).split(':');if(mins&&document.activeElement!==mins&&document.activeElement!==secs)mins.value=parts[0];if(secs&&document.activeElement!==mins&&document.activeElement!==secs)secs.value=parts[1]}else{if(mins&&document.activeElement!==mins&&document.activeElement!==secs)mins.value='';if(secs&&document.activeElement!==mins&&document.activeElement!==secs)secs.value=''}
+}
+function render(){const g=current();if(!g){if(db.groups.length){activeId=db.groups[0].id;return render()}addGroup();return}renderGroups();const s=scoreData(g);const main=$('#main');main.innerHTML=`
+<div class="summary dashboard">
+ <div class="dashboard-main"><div class="k" id="finalLabel">Итог${s.failed?' · ПРОВАЛ':''}</div><div class="v ${s.failed?'bad':'good'}" id="finalScore">${s.failed?'0,0':fmtScore(s.adjusted)}</div><div class="sub" id="progressScore">Отмечено ${s.marked} из ${s.total} · основной ${fmtScore(s.main)}/31 · справа ${fmtScore(s.side)}/16</div></div>
+ <div class="dashboard-stat"><span>Без времени</span><b id="rawScore">${fmtScore(s.raw)}</b><small>из 47 баллов</small></div>
+ <div class="dashboard-stat"><span>Коррекция</span><b id="timeScore">${s.sec==null?'—':fmtScore(s.timeAdj)}</b><small>0,5 балла/мин</small></div>
+ <div class="dashboard-stat"><span>Время</span><b id="summaryTimer">${formatDuration(s.sec)}</b><small>мин : сек</small></div>
+</div>
+<div class="fail-banner ${s.failed?'show':''}" id="failBanner">${s.failed?'ПРОВАЛ ЭВАКУАЦИИ · Баллы сохранены ниже, итоговый результат = 0.':''}</div>
+<section class="org-card"><div class="org-heading">Организационные данные</div><div class="org-layout"><div class="org-fields">
+ <div class="field"><label for="groupDate">Дата</label><input id="groupDate" type="date" value="${escapeHtml(g.date)}"></div>
+ <div class="field"><label for="instructor">Инструктор / позывной</label><input id="instructor" value="${escapeHtml(g.instructor||'')}" placeholder="Позывной и ФИО"></div>
+</div><button type="button" class="btn primary org-export" id="exportCurrentCourse">Экспорт занятия</button></div>
+<details class="members-details"><summary>Состав группы <span class="micro">Позывные и ФИО участников</span></summary><div class="members-inner"><div class="field region-field"><label for="region">Регион проведения курса · необязательно</label><input id="region" value="${escapeHtml(g.region??'Москва и МО')}" placeholder="Москва и МО"></div><textarea class="member-box" id="participants" placeholder="По одному участнику на строку: позывной — ФИО">${escapeHtml(g.participants||'')}</textarea><p class="micro">Формат свободный. Например: Фрэнк — Артём Иванов.</p></div></details></section>
+<div class="reference-note">Памятка инструктору перед стартом</div><div class="members-details"><div class="members-inner"><p class="criterion-full">До выхода группы на учебную эвакуацию определить и озвучить: время года; кто выполняет роль штаба. Вводная для статиста: без травм, лёгкое переохлаждение, слабость, самостоятельно идти не может, требуется эвакуация. Записать ФИО и позывные всех участников. Комплект эвакуации: минимум 3 полных слоя и отдельный слой на ноги (3 больших пледа + 3 больших спасодеяла, по одному маленькому на ноги). Статист-потеряшка откликается только когда к нему подойдёт вплотную кто-то из курсантов.</p></div></div>
+<div class="eval-sticky"><div class="sticky-head"><div class="field"><label for="groupName">Группа</label><input id="groupName" maxlength="80" value="${escapeHtml(g.name)}" placeholder="Название группы"></div><button type="button" id="forcedFailBtn" class="fail-button ${g.forcedFail?'active':''}" aria-pressed="${g.forcedFail?'true':'false'}">${g.forcedFail?'⚑ Провал отмечен':'⚑ Отметить провал'}</button></div><div class="sticky-controls"><div class="timer-card ${g.timer.startedAt&&g.timer.elapsedSeconds==null?'running':''}" id="timerCard"><div class="timer-read" id="timerLive">${formatDuration(s.sec)}</div><button class="btn primary" id="timerStartStop">${g.timer.startedAt&&g.timer.elapsedSeconds==null?'Стоп':'Старт'}</button><span class="timer-status" id="timerStatus">${g.timer.startedAt&&g.timer.elapsedSeconds==null?'Секундомер идёт':'Старт — прибытие · стоп — выдвижение'}</span><div class="time-entry" aria-label="Ручной ввод времени"><input id="manualMinutes" inputmode="numeric" pattern="[0-9]*" maxlength="2" placeholder="мм" aria-label="Минуты"><span class="time-colon" aria-hidden="true">:</span><input id="manualSeconds" inputmode="numeric" pattern="[0-9]*" maxlength="2" placeholder="сс" aria-label="Секунды"></div><button class="btn" id="applyManualTime">Ввести</button><button class="btn ghost" id="clearTime">Сброс</button></div></div></div>
+<nav class="section-nav"><a href="#s-detect">Обнаружение</a><a href="#s-approach">Движение</a><a href="#s-before">До эвакуации</a><a href="#s-evac">Эвакуация</a><a href="#s-forget">Нельзя забыть</a></nav>
+<div id="criteriaRoot"></div>
+<div class="global-details"><label class="small-label" for="globalComment">Общий комментарий инструктора</label><textarea id="globalComment" class="comment-input" placeholder="Дата, позывной инструктора, общие замечания…">${escapeHtml(g.globalComment||'')}</textarea></div>`;
+renderCriteria(g);renderSummary();bindMainEvents();renderRating();}
+function renderCriteria(g){const root=$('#criteriaRoot');const sections=[
+{id:'s-detect',name:'Обнаружение потеряшки',ids:['L11','L12']},
+{id:'s-approach',name:'Движение к потеряшке',ids:['L14','L15']},
+{id:'s-before',name:'Работа до прихода группы эвакуации',ids:CRITERIA.filter(c=>c.side==='main'&&c.row>=18&&c.row<=23).map(c=>c.id)},
+{id:'s-evac',name:'Эвакуация',ids:CRITERIA.filter(c=>c.side==='main'&&c.row>=25).map(c=>c.id)},
+{id:'s-forget',name:'Нельзя забыть',ids:CRITERIA.filter(c=>c.side==='cannotForget').map(c=>c.id)}];
+root.innerHTML=sections.map(sec=>{const items=sec.ids.map(id=>CRITERIA.find(c=>c.id===id)).filter(Boolean);const sub=items.map(c=>criterionHtml(c,g)).join('');return `<section class="section" id="${sec.id}"><div class="section-head"><h2>${sec.name}</h2><span>${items.length} пунктов</span></div><div class="criteria-grid">${sub}</div></section>`}).join('');}
+function criterionHtml(c,g){const v=g.answers?.[c.id];const score=answerScore(c,v);const fail=c.type==='critical'&&v!=null&&Number(v)===0;const done=score!==null;const val=escapeHtml(v??'');let controls='';
+if(c.type==='binary'||c.type==='critical'){controls=`<button class="choice ${v===1||v==='1'?'selected':''}" data-action="answer" data-id="${c.id}" data-value="1">${c.type==='critical'?'Соблюдено':'Да'} · +1</button><button class="choice ${v===0||v==='0'?'selected no':''}" data-action="answer" data-id="${c.id}" data-value="0">${c.type==='critical'?'Нарушение':'Нет'} · 0</button>`}
+else if(c.type==='penalty'){const positive= v!==null&&v!==''&&Number(v)===1;const negativeValue= v!==null&&v!==''&&Number(v)<0?String(Math.abs(Number(v))):'';controls=`<div class="penalty-control"><button type="button" class="choice penalty-yes ${positive?'selected':''}" data-action="penalty-yes" data-id="${c.id}">Да · +1</button><label class="penalty-count"><span>${countLabel(c)} · отрицательная оценка</span><span class="penalty-stepper"><button type="button" data-action="penalty-step" data-dir="-1" data-id="${c.id}" aria-label="Уменьшить штраф">−</button><span class="penalty-input-wrap"><span class="penalty-minus" aria-hidden="true">−</span><input type="number" min="1" max="99" step="1" inputmode="numeric" pattern="[0-9]*" placeholder="1" value="${escapeHtml(negativeValue)}" data-action="penalty" data-id="${c.id}"></span><button type="button" data-action="penalty-step" data-dir="1" data-id="${c.id}" aria-label="Увеличить штраф">＋</button></span></label><span class="score-inline">${score===null?'—':(score>0?'+':'')+score+' б.'}</span></div>`}
+else if(c.type==='scale'){controls=`<div class="stepper"><button type="button" data-action="step" data-dir="-1" data-id="${c.id}">−</button><input type="number" min="0" max="6" step="1" inputmode="numeric" placeholder="—" value="${val}" data-action="scale" data-id="${c.id}"><button type="button" data-action="step" data-dir="1" data-id="${c.id}">＋</button><span class="criterion-note">0–6 баллов</span></div>`}
+const scoreText=score===null?'—':`${score>0?'+':''}${score}`;const scoreClass=score===null?'':score>0?'positive':score<0?'negative':'';const number=c.number||'';const noteHtml=renderTextSegments(c.instructorSegments);const guideHtml=renderScoreSegments(c.scoreSegments);return `<article class="criterion ${done?'done':'missed'} ${fail?'failed':''}" data-criterion="${c.id}"><div class="criterion-top"><div class="criterion-index">${number}</div><div class="criterion-copy"><div class="criterion-title">${escapeHtml(displayTitle(c))}</div>${guideHtml?`<div class="criterion-note score-guide">${guideHtml}</div>`:''}</div><div class="score-pill ${scoreClass}">${scoreText}</div></div><div class="criterion-controls">${controls}</div><details><summary>Инструкторская подсказка и комментарий</summary>${noteHtml?`<div class="criterion-full instructor-note">${noteHtml}</div>`:''}<label class="small-label">Комментарий к этому пункту</label><textarea class="comment-input" rows="2" placeholder="Что именно произошло…" data-action="comment" data-id="${c.id}">${escapeHtml(g.comments?.[c.id]||'')}</textarea></details></article>`}
+function bindMainEvents(){const g=current();$('#groupName').addEventListener('change',e=>{g.name=e.target.value.trim()||defaultName(groupNo(g),g.date||today());changed();renderGroups()});$('#groupDate').addEventListener('change',e=>{g.date=e.target.value||today();if(!g.name||/^Лиса\s+\d+\s+·/.test(g.name))g.name=defaultName(groupNo(g),g.date);changed();renderGroups()});$('#instructor').addEventListener('change',e=>{g.instructor=e.target.value;changed()});$('#region').addEventListener('change',e=>{g.region=e.target.value.trim();changed();renderGroups()});$('#participants').addEventListener('input',e=>{g.participants=e.target.value;touchSave(g)});$('#globalComment').addEventListener('input',e=>{g.globalComment=e.target.value;touchSave(g)});
+$('#manualMinutes').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,2);if(e.target.value.length===2)$('#manualSeconds').focus()});$('#manualSeconds').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,2)});$('#timerStartStop').onclick=()=>{if(g.timer.startedAt&&g.timer.elapsedSeconds==null){g.timer.elapsedSeconds=Math.floor((Date.now()-g.timer.startedAt)/1000);g.timer.startedAt=null;notify('Время остановлено')}else{g.timer.startedAt=Date.now();g.timer.elapsedSeconds=null;notify('Секундомер запущен')}changed();renderSummary()};$('#applyManualTime').onclick=()=>{const mm=String($('#manualMinutes').value||'').trim(),ss=String($('#manualSeconds').value||'').trim();if(!mm&&!ss){notify('Введите минуты и секунды');return}if((mm&&!/^\d{1,4}$/.test(mm))||(ss&&!/^\d{1,2}$/.test(ss))||Number(ss||0)>59){notify('Проверьте время: секунды должны быть от 00 до 59');return}const sec=Number(mm||0)*60+Number(ss||0);g.timer={startedAt:null,elapsedSeconds:sec};changed();renderSummary();notify('Время сохранено')};$('#clearTime').onclick=()=>{g.timer={startedAt:null,elapsedSeconds:null};$('#manualMinutes').value='';$('#manualSeconds').value='';changed();renderSummary()};$('#forcedFailBtn').onclick=()=>{g.forcedFail=!g.forcedFail;changed();renderSummary();notify(g.forcedFail?'Эвакуация отмечена как провал':'Отметка провала снята')};
+$('#criteriaRoot').addEventListener('click',e=>{const b=e.target.closest('button[data-action]');if(!b)return;const id=b.dataset.id;const c=CRITERIA.find(x=>x.id===id);if(!c)return;if(b.dataset.action==='answer'){g.answers[id]=Number(b.dataset.value);changed();renderCriteria(g);renderSummary()}else if(b.dataset.action==='penalty-yes'){g.answers[id]=1;g.scoreSchema=2;changed();renderCriteria(g);renderSummary()}else if(b.dataset.action==='step'){const old=g.answers[id]==null?0:Number(g.answers[id]);g.answers[id]=Math.max(0,Math.min(6,old+Number(b.dataset.dir)));changed();renderCriteria(g);renderSummary()}else if(b.dataset.action==='penalty-step'){const old=Number(g.answers[id]);const magnitude=old<0?Math.abs(old):0;const next=Math.max(1,Math.min(99,magnitude+Number(b.dataset.dir)));g.answers[id]=-next;g.scoreSchema=2;changed();renderCriteria(g);renderSummary()}});
+$('#criteriaRoot').addEventListener('change',e=>{const el=e.target;if(el.dataset.action==='penalty'){if(el.value===''){if(Number(g.answers[el.dataset.id])!==1)delete g.answers[el.dataset.id]}else{const n=Math.floor(Number(el.value));if(n>=1&&n<=99)g.answers[el.dataset.id]=-n;else{notify('Введите количество штрафных баллов от 1 до 99');return}}g.scoreSchema=2;changed();renderCriteria(g);renderSummary()}else if(el.dataset.action==='scale'){if(el.value===''){delete g.answers[el.dataset.id]}else g.answers[el.dataset.id]=Math.max(0,Math.min(6,Math.floor(Number(el.value)||0)));changed();renderCriteria(g);renderSummary()}});
+$('#criteriaRoot').addEventListener('input',e=>{const el=e.target;if(el.dataset.action==='comment'){g.comments[el.dataset.id]=el.value;touchSave(g)}});
+}
+let saveDebounce=null;function touchSave(g){g.updatedAt=Date.now();clearTimeout(saveDebounce);saveDebounce=setTimeout(persist,250)}
+function requestDeleteGroup(){const g=current();if(!g)return;const modal=$('#deleteModal');const text=$('#deleteMessage');text.textContent=db.groups.length===1?`Удалить «${g.name}»? После удаления будет создана новая пустая группа.`:`Удалить «${g.name}»? Все её оценки и комментарии будут удалены.`;modal.classList.add('show');modal.setAttribute('aria-hidden','false')}
+function closeDeleteModal(){const modal=$('#deleteModal');modal.classList.remove('show');modal.setAttribute('aria-hidden','true')}
+function deleteCurrentGroup(){const g=current();if(!g)return;db.groups=db.groups.filter(x=>x.id!==g.id);if(!db.groups.length){const fresh=blankGroup(1);db.groups=[fresh];activeId=fresh.id;}else{activeId=db.groups[0].id;}persist();closeDeleteModal();render();notify('Группа удалена')}
+function addGroup(){const g=blankGroup(nextGroupNo());db.groups.push(g);activeId=g.id;persist();render();notify('Новая группа добавлена')}
+function groupResult(g,source='local',courseId=null){const s=scoreData(g);return {id:g.id,name:g.name,date:g.date,region:g.region||'',participants:g.participants,raw:s.raw,time:formatDuration(s.sec),adjusted:s.adjusted,result:s.failed?0:s.adjusted,failed:s.failed,marked:s.marked,complete:s.marked===s.total&&s.sec!=null,timeSeconds:s.sec,updatedAt:g.updatedAt||g.createdAt||0,source,courseId}}
+function rankingRows(){const all=[...db.groups.map(g=>groupResult(g,'local'))];for(const c of (db.courses||[]))for(const g of (c.groups||[]))all.push(groupResult(g,'course',c.id));const rows=[];for(const r of all){const i=rows.findIndex(x=>x.id===r.id||groupIdentityKey(x)===groupIdentityKey(r));if(i<0)rows.push(r);else if((r.updatedAt||0)>(rows[i].updatedAt||0))rows[i]=r}for(const r of db.ratingArchive){const i=rows.findIndex(x=>x.id===r.id||groupIdentityKey(x)===groupIdentityKey(r));if(i<0)rows.push({...r,source:'import'})}return rows.sort((a,b)=>b.result-a.result||String(a.name||'').localeCompare(String(b.name||''),'ru'))}
+function renderRating(){const rows=rankingRows();$('#ratingCount').textContent=`${rows.length} групп`;if(!rows.length){$('#ratingTable').innerHTML='<div class="empty">Пока нет оценённых групп</div>'}else{$('#ratingTable').innerHTML=`<table><thead><tr><th>Место</th><th>Группа</th><th>Дата</th><th>Регион</th><th>Участники</th><th class="num">Без времени</th><th>Время</th><th class="num">Итог</th><th></th></tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td><td>${escapeHtml(r.name||'Без названия')}</td><td>${escapeHtml(r.date||'—')}</td><td>${escapeHtml(r.region||'—')}</td><td>${escapeHtml((r.participants||'').split('\n').filter(Boolean).length||'—')}</td><td class="num">${fmtScore(Number(r.raw)||0)}</td><td>${escapeHtml(r.time||'—')}</td><td class="num"><b>${fmtScore(Number(r.result)||0)}</b></td><td class="row-actions"><button class="btn" data-open-record="${i}">Результаты</button></td></tr>`).join('')}</tbody></table>`}$$('[data-open-record]').forEach(b=>b.onclick=()=>{const r=rows[Number(b.dataset.openRecord)];const full=findFullGroup(r);openGroupDetail(full||r,r.courseId||null)});}
+
+function findFullGroup(r){const local=db.groups.find(g=>g.id===r.id||groupIdentityKey(g)===groupIdentityKey(r));if(local)return local;for(const c of db.courses||[]){const g=(c.groups||[]).find(x=>x.id===r.id||groupIdentityKey(x)===groupIdentityKey(r));if(g)return g}return null}
+
+function renderCourseList(){const courses=[...(db.courses||[])].sort((a,b)=>String(b.date).localeCompare(String(a.date)));$('#courseCount').textContent=`${courses.length} занятий`;if(!courses.length){$('#courseList').innerHTML='<div class="empty">Сохранённых занятий пока нет. Для сохранения и экспорта занятия нажмите «Экспорт занятия».</div>';return}$('#courseList').innerHTML=courses.map(c=>`<div class="course-item"><div class="course-info"><div class="course-name">${escapeHtml(c.title)}</div><div class="course-meta">${escapeHtml(c.date||'—')} · ${escapeHtml(c.region||'регион не указан')} · ${(c.groups||[]).length} групп</div></div><div class="course-actions"><button class="btn" data-course-open="${escapeHtml(c.id)}">По группам</button><button class="btn" data-course-export="${escapeHtml(c.id)}">Экспорт</button><button class="btn danger" data-course-delete="${escapeHtml(c.id)}" aria-label="Удалить занятие">Удалить</button></div></div>`).join('');$$('[data-course-open]').forEach(b=>b.onclick=()=>openCourse(b.dataset.courseOpen));$$('[data-course-export]').forEach(b=>b.onclick=()=>exportCourse(b.dataset.courseExport));$$('[data-course-delete]').forEach(b=>b.onclick=()=>deleteCourse(b.dataset.courseDelete));}
+let openedCourseId=null;
+function openCourse(id){const c=(db.courses||[]).find(x=>x.id===id);if(!c)return;openedCourseId=id;$('#ratingListView').classList.add('hidden');$('#groupDetailView').classList.add('hidden');$('#courseDetailView').classList.remove('hidden');$('#courseDetailTitle').textContent=c.title;$('#courseDetailMeta').textContent=[c.date,c.region,`${c.groups.length} групп`].filter(Boolean).join(' · ');const rows=c.groups.map((g,i)=>({g,s:scoreData(g),i})).sort((a,b)=>b.s.adjusted-a.s.adjusted);$('#courseDetailTable').innerHTML=rows.length?rows.map(({g,s,i},idx)=>`<div class="course-group-card"><div class="course-group-info"><div class="course-group-name">${escapeHtml(g.name||'Без названия')}</div><div class="course-group-meta">${escapeHtml((g.participants||'').split('\n').filter(Boolean).length||'—')} участников · ${escapeHtml(g.instructor||'Инструктор не указан')} · ${escapeHtml(g.date||'')}</div></div><div class="course-group-score">${s.failed?'ПРОВАЛ':fmtScore(s.adjusted)}</div><button class="btn" data-course-group="${idx}">Результаты</button><button class="btn ghost" data-course-group-export="${idx}">Поделиться</button></div>`).join(''):'<div class="empty">В занятии пока нет групп</div>';$$('[data-course-group]').forEach(b=>{const sorted=rows; b.onclick=()=>openGroupDetail(sorted[Number(b.dataset.courseGroup)].g,c.id)});$$('[data-course-group-export]').forEach(b=>{const sorted=rows;b.onclick=()=>exportGroup(sorted[Number(b.dataset.courseGroup)].g,c)});}
+function readonlyCriteriaHtml(g){const sections=[{name:'Обнаружение потеряшки',ids:['L11','L12']},{name:'Движение к потеряшке',ids:['L14','L15']},{name:'Работа до прихода группы эвакуации',ids:CRITERIA.filter(c=>c.side==='main'&&c.row>=18&&c.row<=23).map(c=>c.id)},{name:'Эвакуация',ids:CRITERIA.filter(c=>c.side==='main'&&c.row>=25).map(c=>c.id)},{name:'Нельзя забыть',ids:CRITERIA.filter(c=>c.side==='cannotForget').map(c=>c.id)}];return sections.map(sec=>{const items=sec.ids.map(id=>CRITERIA.find(c=>c.id===id)).filter(Boolean);return `<section class="readonly-section"><div class="section-head"><h2>${sec.name}</h2><span>${items.length} пунктов</span></div>${items.map(c=>{const v=g.answers?.[c.id],score=answerScore(c,v),notes=(c.instructorSegments||[]).map(x=>x.text).join('');return `<article class="readonly-criterion"><div class="criterion-top"><div class="criterion-index">${c.number||''}</div><div class="criterion-copy"><div class="criterion-title">${escapeHtml(displayTitle(c))}</div>${renderScoreSegments(c.scoreSegments)?`<div class="criterion-note score-guide">${renderScoreSegments(c.scoreSegments)}</div>`:''}</div><div class="score-pill ${score===null?'':score>0?'positive':score<0?'negative':''}">${score===null?'—':(score>0?'+':'')+score}</div></div>${notes?`<div class="readonly-notes">${escapeHtml(notes)}</div>`:''}${g.comments?.[c.id]?`<div class="readonly-comment"><b>Комментарий:</b> ${escapeHtml(g.comments[c.id])}</div>`:''}</article>`}).join('')}</section>`}).join('')}
+function openGroupDetail(g,courseId=null){if(!g)return;openedGroupDetail={group:g,courseId};$('#ratingListView').classList.add('hidden');$('#courseDetailView').classList.add('hidden');$('#groupDetailView').classList.remove('hidden');const s=scoreData(g);$('#groupDetailTitle').textContent=g.name||'Группа';$('#groupDetailMeta').textContent=[g.date,g.region,g.instructor?`Инструктор: ${g.instructor}`:''].filter(Boolean).join(' · ');$('#groupDetailSummary').innerHTML=`<div class="group-detail-summary"><div class="group-detail-stat"><span>Итог</span><b>${s.failed?'0,0':fmtScore(s.adjusted)}</b></div><div class="group-detail-stat"><span>Без времени</span><b>${fmtScore(s.raw)}</b></div><div class="group-detail-stat"><span>Коррекция</span><b>${fmtScore(s.timeAdj)}</b></div><div class="group-detail-stat"><span>Время</span><b>${formatDuration(s.sec)}</b></div><div class="group-detail-stat"><span>Отмечено</span><b>${s.marked}/${s.total}</b></div><div class="group-detail-stat"><span>Результат</span><b>${s.failed?'ПРОВАЛ':'Зачёт'}</b></div></div><div class="micro" style="white-space:pre-wrap;margin:8px 0">Состав группы: ${escapeHtml(g.participants||'не указан')}</div>`;$('#groupDetailTable').innerHTML=g.answers?readonlyCriteriaHtml(g):'<div class="empty">Подробные оценки отсутствуют в этом файле.</div>';$('#groupDetailComments').innerHTML=g.globalComment?`<div class="detail-comments"><b>Общий комментарий инструктора</b><br>${escapeHtml(g.globalComment)}</div>`:'';}
+
+let openedGroupDetail=null;
+function closeGroupDetail(){if(openedGroupDetail?.courseId){openCourse(openedGroupDetail.courseId);return}$('#groupDetailView').classList.add('hidden');$('#ratingListView').classList.remove('hidden');renderRating();renderCourseList()}
+
+function closeCourse(){openedCourseId=null;$('#courseDetailView').classList.add('hidden');$('#groupDetailView').classList.add('hidden');$('#ratingListView').classList.remove('hidden');renderRating();renderCourseList()}
+function mergeCourse(incoming){const c=normalizeCourse(incoming);const key=courseKey(c);const found=(db.courses||[]).find(x=>courseKey(x)===key||x.id===c.id);if(!found){c.groups=mergeGroupList([],c.groups).groups;db.courses.push(c);return {added:1,groupsAdded:c.groups.length,groupsUpdated:0}}const merged=mergeGroupList(found.groups,c.groups);found.groups=merged.groups;found.updatedAt=Math.max(found.updatedAt||0,c.updatedAt||0);return {added:0,groupsAdded:merged.added,groupsUpdated:merged.updated}}
+
+function openCourseExportModal(){const modal=$('#exportCourseModal');$('#courseTitleInput').value='';modal.classList.add('show');modal.setAttribute('aria-hidden','false');setTimeout(()=>$('#courseTitleInput').focus(),40)}
+function closeCourseExportModal(){const modal=$('#exportCourseModal');modal.classList.remove('show');modal.setAttribute('aria-hidden','true')}
+function archiveCurrentCourse(title){if(!db.groups.length){notify('Нет групп для экспорта');return}title=String(title||'').trim();if(!title){notify('Укажите название занятия');return}const readyGroups=db.groups.filter(g=>Object.keys(g.answers||{}).length>0||String(g.participants||'').trim()||String(g.globalComment||'').trim()||g.timer?.elapsedSeconds!=null||g.forcedFail);if(!readyGroups.length){notify('Нет заполненных групп для экспорта');return}const date=readyGroups.map(g=>g.date).filter(Boolean).sort()[0]||today();const regions=[...new Set(readyGroups.map(g=>g.region).filter(Boolean))];const region=regions.length===1?regions[0]:(regions.length?'Смешанные регионы':'');const c={id:courseKey({title,date,region}),title,date,region,groups:readyGroups.map(g=>{const copy=JSON.parse(JSON.stringify(g));if(copy.timer?.startedAt){copy.timer.elapsedSeconds=elapsedSeconds(g);copy.timer.startedAt=null}return copy}),updatedAt:Date.now()};const res=mergeCourse(c);saveDownload(`evacuation-course-${(date||today())}.json`,'application/json;charset=utf-8',JSON.stringify({kind:'evacuation-course',version:1,exportedAt:new Date().toISOString(),course:c},null,2));db.groups=[blankGroup(1)];activeId=db.groups[0].id;persist();render();renderRating();renderCourseList();closeCourseExportModal();notify(res.added?'Занятие добавлено в архив и экспортировано':(res.groupsAdded?'Новые группы добавлены в архив и экспортированы':'Занятие уже есть в архиве; экспорт создан'))}
+
+function saveDownload(filename,mime,content){const blob=new Blob([content],{type:mime});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.style.display='none';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}
+function groupIdentityKey(g){const people=String(g.participants||'').split(/\r?\n/).map(x=>x.trim().toLocaleLowerCase('ru').replace(/\s+/g,' ')).filter(Boolean).sort().join('|');const base=[String(g.date||''),String(g.region||'').trim().toLocaleLowerCase('ru'),String(g.name||'').trim().toLocaleLowerCase('ru'),people].join('::');return people?base:base+'::id:'+String(g.id||'')}
+function mergeSummaryList(existing,incoming){const rows=[...(existing||[])];let added=0,updated=0;for(const r of incoming||[]){if(!r.id)continue;const i=rows.findIndex(x=>x.id===r.id||groupIdentityKey(x)===groupIdentityKey(r));if(i<0){rows.push(r);added++}else if((r.updatedAt||0)>(rows[i].updatedAt||0)){rows[i]={...r,id:rows[i].id};updated++}}return {records:rows,added,updated}}
+function mergeGroupList(existing,incoming){const byId=new Map(),byKey=new Map();for(const raw of existing||[]){const g=normalizeGroup(raw);byId.set(g.id,g);byKey.set(groupIdentityKey(g),g)}let added=0,updated=0;for(const raw of incoming||[]){const g=normalizeGroup(raw),key=groupIdentityKey(g),old=byId.get(g.id)||byKey.get(key);if(!old){byId.set(g.id,g);byKey.set(key,g);added++}else if((g.updatedAt||0)>(old.updatedAt||0)){const merged={...g,id:old.id};byId.set(old.id,merged);byKey.delete(groupIdentityKey(old));byKey.set(groupIdentityKey(merged),merged);updated++}}return {groups:[...byId.values()],added,updated}}
+function exportGroup(g,course=null){if(!g)return;const payload={kind:'evacuation-group',version:1,exportedAt:new Date().toISOString(),group:g,course:course?{id:course.id,title:course.title,date:course.date,region:course.region}:null};saveDownload(`evacuation-group-${(g.date||today())}-${String(g.name||'group').replace(/[^a-z0-9а-яё_-]+/gi,'-')}.json`,'application/json;charset=utf-8',JSON.stringify(payload,null,2))}
+function deleteCourse(id){const c=(db.courses||[]).find(x=>x.id===id);if(!c)return;const count=(c.groups||[]).length;const label=c.title||'это занятие';if(!confirm(`Удалить «${label}» из архива?\n\nБудут удалены ${count} групп${count===1?'а':'ы'} и их результаты из рейтинга. Отменить это действие нельзя.`))return;const keys=new Set((c.groups||[]).map(g=>groupIdentityKey(g)));const ids=new Set((c.groups||[]).map(g=>String(g.id)));db.courses=db.courses.filter(x=>x.id!==id);db.ratingArchive=(db.ratingArchive||[]).filter(r=>!ids.has(String(r.id))&&!keys.has(groupIdentityKey(r)));if(openedCourseId===id)closeCourse();persist();renderCourseList();renderRating();notify('Занятие и его группы удалены из архива и рейтинга')}
+function exportCourse(id){const c=(db.courses||[]).find(x=>x.id===id);if(!c)return;const payload={kind:'evacuation-course',version:1,exportedAt:new Date().toISOString(),course:c};saveDownload(`evacuation-course-${(c.date||today())}.json`,'application/json;charset=utf-8',JSON.stringify(payload,null,2))}
+function exportAll(){const payload={kind:'evacuation-database',version:3,exportedAt:new Date().toISOString(),groups:db.groups||[],ratingArchive:db.ratingArchive,courses:db.courses||[]};saveDownload(`evacuation-database-${today()}.json`,'application/json;charset=utf-8',JSON.stringify(payload,null,2));}
+function csvEscape(v){return '"'+String(v??'').replace(/"/g,'""')+'"'}
+function exportRatingCsv(){const rows=rankingRows();const head=['Группа','Дата','Регион','Участники','Отмечено пунктов','Баллы без времени','Время','Итог'];const lines=[head,...rows.map(r=>[r.name,r.date,r.region||'',r.participants,r.marked??'',r.raw,r.time,r.result])].map(row=>row.map(csvEscape).join(';'));saveDownload(`evacuation-rating-${today()}.csv`,'text/csv;charset=utf-8','\ufeff'+lines.join('\r\n'))}
+function mergeImport(payload,onlyRating){if(onlyRating||payload.kind==='evacuation-rating'){const incoming=payload.records||[];const merged=mergeSummaryList(db.ratingArchive,incoming);db.ratingArchive=merged.records;const added=merged.added,updated=merged.updated;persist();renderRating();showTab('ratingPage');notify(`Рейтинг: добавлено ${added}, обновлено ${updated}`);return}
+if(payload.kind==='evacuation-course'&&payload.course){const res=mergeCourse(payload.course);persist();renderCourseList();renderRating();showTab('ratingPage');notify(res.added?'Занятие добавлено':`Занятие объединено: +${res.groupsAdded} групп, обновлено ${res.groupsUpdated}`);return}
+if(payload.kind==='evacuation-group'&&payload.group){const g=normalizeGroup(payload.group);if(payload.course){const c={...payload.course,groups:[g]};const res=mergeCourse(c);persist();renderCourseList();renderRating();showTab('ratingPage');notify(`Группа объединена с занятием: +${res.groupsAdded}, обновлено ${res.groupsUpdated}`)}else{const res=mergeGroupList(db.groups,[g]);db.groups=res.groups;persist();render();renderRating();showTab('evaluationPage');notify(`Группы: добавлено ${res.added}, обновлено ${res.updated}`)}return}
+const incoming=Array.isArray(payload.groups)?payload.groups:[];const merged=mergeGroupList(db.groups,incoming);db.groups=merged.groups;db.ratingArchive=mergeSummaryList(db.ratingArchive,payload.ratingArchive||[]).records;let coursesAdded=0,courseGroupsAdded=0,courseGroupsUpdated=0;for(const c of (payload.courses||[])){const res=mergeCourse(c);coursesAdded+=res.added;courseGroupsAdded+=res.groupsAdded;courseGroupsUpdated+=res.groupsUpdated}if(!activeId||!db.groups.some(g=>g.id===activeId))activeId=db.groups[0]?.id||null;if(!db.groups.length)addGroup();else{persist();render();renderRating();renderCourseList()}notify(`Занятий добавлено: ${coursesAdded}; групп в работе: +${merged.added}, обновлено ${merged.updated}; в истории: +${courseGroupsAdded}, обновлено ${courseGroupsUpdated}`)}
+
+function importFile(mode='all'){window.__importMode=mode;if(window.AndroidBridge){window.AndroidBridge.pickFile(mode);return}$('#importFile').dataset.mode=mode;$('#importFile').click()}
+window.receiveImportedFile=function(content){try{const obj=JSON.parse(content);const mode=window.__importMode||'all';window.__importMode='all';if(mode==='rating'&&obj.kind!=='evacuation-rating'){notify('Для рейтинга нужен JSON-файл рейтинга');return}mergeImport(obj,obj.kind==='evacuation-rating')}catch(e){notify('Не удалось прочитать JSON-файл')}};
+$('#themeBtn').onclick=()=>{const root=document.documentElement;const next=root.dataset.theme==='light'?'dark':'light';root.dataset.theme=next;localStorage.setItem('evac-theme',next);$('#themeBtn').textContent=next==='light'?'☾ Тема':'☼ Тема'};
+const savedTheme=localStorage.getItem('evac-theme')||'dark';document.documentElement.dataset.theme=savedTheme;$('#themeBtn').textContent=savedTheme==='light'?'☾ Тема':'☼ Тема';$('#cancelCourseExport').onclick=closeCourseExportModal;$('#confirmCourseExport').onclick=()=>archiveCurrentCourse($('#courseTitleInput').value);$('#exportCourseModal').addEventListener('click',e=>{if(e.target.id==='exportCourseModal')closeCourseExportModal()});$('#courseTitleInput').addEventListener('keydown',e=>{if(e.key==='Enter')archiveCurrentCourse(e.target.value)});$('#cancelRenameGroup').onclick=closeRenameGroup;$('#confirmRenameGroup').onclick=confirmRenameGroup;$('#renameGroupModal').addEventListener('click',e=>{if(e.target.id==='renameGroupModal')closeRenameGroup()});$('#renameGroupInput').addEventListener('keydown',e=>{if(e.key==='Enter')confirmRenameGroup()});
+$('#exportAll').onclick=exportAll;$('#importAll').onclick=()=>importFile('all');$('#backFromGroupDetail').onclick=closeGroupDetail;$('#exportDetailGroup').onclick=()=>{if(openedGroupDetail)exportGroup(openedGroupDetail.group,openedGroupDetail.courseId?(db.courses||[]).find(c=>c.id===openedGroupDetail.courseId):null)};$('#backToCourses').onclick=closeCourse;$('#exportThisCourse').onclick=()=>exportCourse(openedCourseId);$('#exportRating').onclick=exportRatingCsv;
+$('#importFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const obj=JSON.parse(await f.text());const mode=e.target.dataset.mode||'all';if(mode==='rating'&&obj.kind!=='evacuation-rating'){notify('Для рейтинга нужен JSON-файл рейтинга')}else mergeImport(obj,obj.kind==='evacuation-rating')}catch(err){notify('Файл не похож на экспорт JSON приложения')}e.target.value=''});
+if(db.groups.length===0){const g=blankGroup(1);db.groups.push(g);activeId=g.id;persist()}render();renderCourseList();showTab('referencePage');
+tickTimer=window.setInterval(()=>{const g=current();if(g&&g.timer&&g.timer.startedAt&&g.timer.elapsedSeconds==null)renderSummary()},250);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){const g=current();if(g&&g.timer&&g.timer.startedAt&&g.timer.elapsedSeconds==null)renderSummary()}});
+document.addEventListener('click',e=>{if(e.target.closest('#exportCurrentCourse'))openCourseExportModal()});
+
+// PWA: обновления и офлайн-кэш. Локальный HTML-файл продолжает работать без Service Worker.
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => console.warn('PWA worker registration failed:', err));
+  });
+}
+</script>
+</div>
+</body>
+</html>
